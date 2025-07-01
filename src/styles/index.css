@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-blue: #1F5077;
+  --color-primary-beige: #FBF7F2;
+
+  --color-primary-blue-hover: #337cb5;
+
+  --my-radius : 7px;
+}
+
+body{
+   
+    background-color: #FBF7F2;
+}
+
+@media only screen and (max-width: 768px) {
+  body {
+     padding: 10px;
+  }
+}
