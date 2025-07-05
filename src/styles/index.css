@@ -10,8 +10,15 @@
 }
 
 body{
-   
     background-color: #FBF7F2;
+}
+
+.form_input{
+  @apply mb-6 w-full h-12 rounded-(--my-radius) border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent
+}
+
+.form_submit{
+  @apply w-full h-12 bg-primary-blue text-white py-2 rounded-(--my-radius) hover:bg-primary-blue-hover transition-colors hover:cursor-pointer font-semibold
 }
 
 @media only screen and (max-width: 768px) {
