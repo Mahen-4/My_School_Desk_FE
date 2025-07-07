@@ -8,8 +8,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Digi_code_verif />} />
-        <Route path='auth/connexion' element={<Login />}/> 
+        <Route path='/' element={<Login />} />
+        <Route path='/auth/digital_code' element={<Digi_code_verif />}/> 
         <Route path='auth/reinitialiser_mdp' element={<Password_forget />}/> 
       </Routes>
     </BrowserRouter>

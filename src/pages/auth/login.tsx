@@ -1,7 +1,37 @@
 import { NavLink } from "react-router-dom";
 import Left_quote_image from "../../components/auth_components/left_quote_image";
+import { useMutation } from '@tanstack/react-query';
+import { login } from '../../api/auth_api';
+import React, { useRef, type RefObject, useEffect } from 'react';
+import { getCSRFToken } from "../../api/auth_api";
 
 export default function Login() {
+
+  useEffect(() => {
+      getCSRFToken();  // get csrf token
+    }, []);
+
+  const input_email_ref = useRef<HTMLInputElement>(null);
+  const input_password_ref = useRef<HTMLInputElement>(null);
+
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  });
+
+  const login_check =(event: React.FormEvent)=>{
+    event.preventDefault();
+    console.log("formulaire soumis");
+    const email_val: string = input_email_ref.current?.value || "";
+    const password_val: string = input_password_ref.current?.value || "";
+
+    mutation.mutate({ email: email_val, password: password_val })
+  }
+
+
+
   return (
     <div className="min-h-screen flex bg-gray-100 font-sans">
       <Left_quote_image />
@@ -15,7 +45,7 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form className="max-w-md w-full">
+        <form className="max-w-md w-full" action="" onSubmit={login_check}>
           <h2 className="text-3xl font-bold text-primary-blue mb-2">Connexion</h2>
           <p className="mb-8 text-sm text-gray-500">Avec votre email et mot de passe</p>
 
@@ -23,6 +53,7 @@ export default function Login() {
             Email *
           </label>
           <input
+            ref={input_email_ref}
             type="email"
             id="email"
             placeholder="Entrer l'email"
@@ -34,6 +65,7 @@ export default function Login() {
             Mot de passe *
           </label>
           <input
+            ref={input_password_ref}
             type="password"
             id="password"
             placeholder="Entrer le mot de passe"

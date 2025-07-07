@@ -45,7 +45,7 @@ export default function Password_change() {
 
           <p className="mt-4 text-center text-sm text-gray-600">
             Ou
-            <NavLink to="/auth/connexion" className="block text-primary-blue font-semibold hover:underline">Retour à la page de connexion</NavLink>
+            <NavLink to="/" className="block text-primary-blue font-semibold hover:underline">Retour à la page de connexion</NavLink>
           </p>
           
         </form>
