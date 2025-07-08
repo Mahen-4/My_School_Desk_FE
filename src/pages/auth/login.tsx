@@ -1,11 +1,13 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate  } from "react-router-dom";
 import Left_quote_image from "../../components/auth_components/left_quote_image";
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../../api/auth_api';
 import React, { useRef, type RefObject, useEffect } from 'react';
 import { getCSRFToken } from "../../api/auth_api";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Login() {
+  const navigate = useNavigate();
 
   useEffect(() => {
       getCSRFToken();  // get csrf token
@@ -16,17 +18,30 @@ export default function Login() {
 
   const mutation = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      console.log(data)
+    onSuccess: () => {
+      toast.success("Identifiants valide !", {style: {
+        padding: '16px',
+        fontSize: '20px'
+      },})
+      sessionStorage.setItem("pending2FA", "true"); // set session variable for A2F page protect
+      navigate('/auth/digital_code')
     },
+    onError : ()=>{
+      toast.error("Identifiants invalide !", {style: {
+        padding: '16px',
+        fontSize: '20px'
+      },})
+    }
   });
 
   const login_check =(event: React.FormEvent)=>{
     event.preventDefault();
-    console.log("formulaire soumis");
-    const email_val: string = input_email_ref.current?.value || "";
+
+    //check value if not empty or null
+    const email_val: string = input_email_ref.current?.value || ""; 
     const password_val: string = input_password_ref.current?.value || "";
 
+    //execute function login with those credentials
     mutation.mutate({ email: email_val, password: password_val })
   }
 
@@ -34,6 +49,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex bg-gray-100 font-sans">
+      <Toaster position="top-right"/>
       <Left_quote_image />
 
       {/* Right - login form */}

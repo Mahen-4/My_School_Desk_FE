@@ -3,7 +3,7 @@
 @theme {
   --color-primary-blue: #1F5077;
   --color-primary-beige: #FBF7F2;
-
+  --color-primary-grey: #696F79;
   --color-primary-blue-hover: #337cb5;
 
   --my-radius : 7px;
@@ -19,6 +19,13 @@ body{
 
 .form_submit{
   @apply w-full h-12 bg-primary-blue text-white py-2 rounded-(--my-radius) hover:bg-primary-blue-hover transition-colors hover:cursor-pointer font-semibold
+}
+
+.menu_not_active{
+  @apply flex items-center gap-3 p-2 rounded-md hover:bg-blue-100 text-gray-700 font-medium
+}
+.menu_active{
+  @apply flex items-center gap-3 p-2 rounded-md hover:bg-primary-blue-hover text-primary-beige bg-primary-blue font-medium
 }
 
 @media only screen and (max-width: 768px) {
