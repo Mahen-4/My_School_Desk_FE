@@ -17,18 +17,16 @@ export default function Digi_code_verif() {
       if (!sessionStorage.getItem("pending2FA")) {
         navigate("/"); //return to login
       }
-      else{
-        getCSRFToken();  // get csrf token
-      }
     }, []);
 
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: digi_code_check,
-    onSuccess: (data) => {
-        queryClient.setQueryData(["user"], data);
-        navigate('/student/home')
+    mutationFn: digi_code_check, //make request
+    onSuccess: (data : any) => {
+        queryClient.setQueryData(["user"], data); // data to cache
+        data.is_teacher == true ? navigate('/teacher/accueil') :  navigate('/student/accueil') // redirect 
+       
     },
     onError: (err: any) => {
       // if response
@@ -43,6 +41,7 @@ export default function Digi_code_verif() {
             padding: '16px',
             fontSize: '20px'
           },})
+          console.log(err)
       }
      
     }

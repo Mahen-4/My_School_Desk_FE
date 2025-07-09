@@ -4,7 +4,10 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 
 export default function App_layout() {
 
-    let location = useLocation().pathname.split('/')[2]
+
+  let user_type = useLocation().pathname.split('/')[1]
+  let location = useLocation().pathname.split('/')[2]
+
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
@@ -16,19 +19,19 @@ export default function App_layout() {
           </div>
 
           <nav className="flex flex-col gap-4">
-            <NavLink to="/student/home" className={location == 'accueil' ? "menu_active" : "menu_not_active"}>
+            <NavLink to={`/${user_type}/accueil`} className={location == 'accueil' ? "menu_active" : "menu_not_active"}>
               <FaHome className={location == 'accueil' ?  "text-xl" : "text-xl text-primary-blue" } />
               Accueil
             </NavLink>
-            <NavLink to="/student/notes" className={location == 'notes' ? "menu_active" : "menu_not_active"}>
+            <NavLink to={`/${user_type}/note`} className={location == 'notes' ? "menu_active" : "menu_not_active"}>
               <FaBook className={location == 'notes' ?  "text-xl" : "text-xl text-primary-blue" } />
               Notes
             </NavLink>
-            <NavLink to="/student/devoirs" className={location == 'devoirs' ? "menu_active" : "menu_not_active"}>
+            <NavLink to={`/${user_type}/devoirs`} className={location == 'devoirs' ? "menu_active" : "menu_not_active"}>
               <FaClipboardList className={location == 'devoirs' ?  "text-xl" : "text-xl text-primary-blue" } />
               Devoirs
             </NavLink>
-            <NavLink to="/student/quiz" className={location == 'quiz' ? "menu_active" : "menu_not_active"}>
+            <NavLink to={`/${user_type}/quiz`} className={location == 'quiz' ? "menu_active" : "menu_not_active"}>
               <FaQuestionCircle className={location == 'quiz' ?  "text-xl" : "text-xl text-primary-blue" } />
               Quiz
             </NavLink>
@@ -54,8 +57,8 @@ export default function App_layout() {
       </main>
 
        <div className="w-64 fixed right-0 top-0 h-screen bg-white shadow-md flex flex-col justify-between px-4 py-6 z-10">
-    Droite
-  </div>
+        Droite
+      </div>
     </div>
   );
 }

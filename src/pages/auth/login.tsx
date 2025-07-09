@@ -9,9 +9,7 @@ import toast, { Toaster } from 'react-hot-toast';
 export default function Login() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-      getCSRFToken();  // get csrf token
-    }, []);
+  
 
   const input_email_ref = useRef<HTMLInputElement>(null);
   const input_password_ref = useRef<HTMLInputElement>(null);
@@ -26,7 +24,8 @@ export default function Login() {
       sessionStorage.setItem("pending2FA", "true"); // set session variable for A2F page protect
       navigate('/auth/digital_code')
     },
-    onError : ()=>{
+    onError : (err)=>{
+      console.log(err)
       toast.error("Identifiants invalide !", {style: {
         padding: '16px',
         fontSize: '20px'
@@ -41,8 +40,16 @@ export default function Login() {
     const email_val: string = input_email_ref.current?.value || ""; 
     const password_val: string = input_password_ref.current?.value || "";
 
-    //execute function login with those credentials
-    mutation.mutate({ email: email_val, password: password_val })
+    if (email_val == "" || email_val == null || password_val == "" || password_val == null){
+      toast.error("Champs vide !", {style: {
+        padding: '16px',
+        fontSize: '20px'
+      },})
+    }
+    else{
+      //execute function login with those credentials
+      mutation.mutate({ email: email_val, password: password_val })
+    }
   }
 
 

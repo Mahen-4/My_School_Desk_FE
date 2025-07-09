@@ -1,11 +1,51 @@
 import Left_quote_image from "../../components/auth_components/left_quote_image";
-import {NavLink } from 'react-router-dom'
+import {NavLink, useNavigate } from 'react-router-dom'
+import {useEffect, useRef, type RefObject}  from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { getCSRFToken, reset_password} from "../../api/auth_api";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Password_forget() {
+
+  const navigate = useNavigate();
+  
+  const email_input_ref = useRef<HTMLInputElement>(null) 
+
+
+  const mutation = useMutation({
+    mutationFn: reset_password, // execute request
+    onSuccess: () => {
+       sessionStorage.setItem("pending_reset_mdp", "true"); // set session variable for change page protect
+       toast.success('Email envoyé', {style: {
+          padding: '16px',
+          fontSize: '20px'
+        },})
+       navigate('/')
+    },
+    onError: (err: any) => {
+      // if response
+      if (err.response && err.response.data) {   
+         toast.error(err.response.data.error, {style: {
+          padding: '16px',
+          fontSize: '20px'
+        },})
+      } 
+      else {
+        toast.error("Erreur inconnue", {style: {
+            padding: '16px',
+            fontSize: '20px'
+          },})
+      }
+     
+    }
+  })
+  
+
+
   return (
     <div className="min-h-screen flex bg-gray-100 font-sans">
       <Left_quote_image />
-
+      <Toaster/>
       {/* Right - digital code form */}
       <div className="w-full px-0 md:w-1/2 bg-gray-50 flex flex-col justify-center md:px-60 ">
         {/* Logo */}
@@ -15,7 +55,10 @@ export default function Password_forget() {
         </div>
 
         {/* Form */}
-        <form className="max-w-md w-full">
+        <form className="max-w-md w-full" onSubmit={(event: React.FormEvent)=> {
+            event.preventDefault()
+            mutation.mutate({email: email_input_ref.current?.value || "" })
+          }}>
           <h2 className="text-3xl font-bold text-primary-blue mb-2">Réinitialiser mot de passe</h2>
           <p className="mb-8 text-sm text-gray-500">Entrer votre email</p>
 
@@ -23,6 +66,7 @@ export default function Password_forget() {
             Email *
           </label>
           <input
+            ref={email_input_ref}
             type="email"
             id="email"
             placeholder="Entrer l'email"
