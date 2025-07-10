@@ -23,7 +23,7 @@ export default function App_layout() {
               <FaHome className={location == 'accueil' ?  "text-xl" : "text-xl text-primary-blue" } />
               Accueil
             </NavLink>
-            <NavLink to={`/${user_type}/note`} className={location == 'notes' ? "menu_active" : "menu_not_active"}>
+            <NavLink to={`/${user_type}/notes`} className={location == 'notes' ? "menu_active" : "menu_not_active"}>
               <FaBook className={location == 'notes' ?  "text-xl" : "text-xl text-primary-blue" } />
               Notes
             </NavLink>

@@ -10,6 +10,10 @@ import Password_change from './pages/auth/password_change';
 import { use_current_user } from './api/auth_api';
 import Teacher_homeworks from './pages/homeworks/teacher_homeworks';
 import Teacher_add_homeworks from './pages/homeworks/teacher_add_homeworks';
+import Teacher_edit_homeworks from './pages/homeworks/teacher_edit_homeworks';
+import Students_homeworks from './pages/homeworks/student_homeworks';
+import Teacher_add_results from './pages/results/teacher_add_results';
+import Teacher_results from './pages/results/teacher_results';
 
 // type User_interface = {
 //   first_name: string,
@@ -45,12 +49,15 @@ function App() {
             <Route element={<App_layout />}>
               <Route element={<Protected_route condition={user?.is_student} redirectTo="/" />}>
                 <Route path="student/accueil" element={<Student_home />} />
+                <Route path='student/devoirs' element={<Students_homeworks />} />
               </Route>
               <Route element={<Protected_route condition={user?.is_teacher} redirectTo="/" />}>
                 <Route path="teacher/accueil" element={<Teacher_home />} />
                 <Route path="teacher/devoirs" element={<Teacher_homeworks />} />
                 <Route path="teacher/devoirs/ajouter" element={<Teacher_add_homeworks />} />
-                
+                <Route path="teacher/devoirs/modifier" element={<Teacher_edit_homeworks />} />
+                <Route path="teacher/notes" element={<Teacher_results />}/>
+                <Route path="teacher/notes/ajouter" element={<Teacher_add_results />}/>
               </Route>
             </Route>
           )}

@@ -8,6 +8,11 @@ export interface Classe_interface {
   name: string;
 }
 
+export interface Student_full_name_interface{
+  first_name: string,
+  last_name: string
+}
+
 //get all classes from backend
 export const get_all_classes = async () => {
   const res = await axios.get("http://localhost:8000/classes/all", {
@@ -26,3 +31,18 @@ export const use_get_all_classes = ()=>{
   });
 }
 
+
+
+export const get_classe_students = async(classe_name: string) => {
+
+  const csrfToken = Cookies.get("csrftoken"); //get csrf token
+
+  const res = await axios.post('http://localhost:8000/classes/all_students', classe_name, {
+    headers: {
+        "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
+        'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+  })
+  return res.data
+}

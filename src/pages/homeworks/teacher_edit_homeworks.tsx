@@ -1,15 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { use_get_all_classes } from "../../api/classes_api";
 import type { Classe_interface } from '../../api/classes_api';
-import { add_homework_db } from '../../api/homeworks_api';
+import { edit_homework_db } from '../../api/homeworks_api';
 import { useMutation } from '@tanstack/react-query';
 import toast, { Toaster } from 'react-hot-toast';
+import { useLocation } from "react-router-dom";
 
-export default function Teacher_add_homeworks(){
 
-    const [selected_classe_name, setSelected_classe_name]  = useState("")
-    const [due_date, setDue_date]: any = useState('');
-    const [description, setDescription] = useState('');
+export default function Teacher_edit_homeworks(){
+
+    
+    const { state } = useLocation(); //get state 
+
+   
+    if (!state) { //if no state
+        return <p>Pas de données fournies</p>;
+    }
+
+    const { state_homework_id, state_classe_name,  state_description, state_due_date } = state; // get state data
+
+    const [selected_classe_name, setSelected_classe_name]  = useState(state_classe_name)
+    const [due_date, setDue_date]: any = useState(state_due_date);
+    const [description, setDescription] = useState(state_description);
+
 
     const {data: all_classes, isLoading} = use_get_all_classes() as {
             data: Classe_interface[],
@@ -17,9 +30,9 @@ export default function Teacher_add_homeworks(){
         }
    
     const mutation = useMutation({
-        mutationFn: add_homework_db, //make request
+        mutationFn: edit_homework_db, //make request
         onSuccess: () => {
-            toast.success("devoir ajouté ! ", {style: {
+            toast.success("devoir modifié ! ", {style: {
             padding: '16px',
             fontSize: '20px'
             },})
@@ -42,19 +55,28 @@ export default function Teacher_add_homeworks(){
         }
     })
     
-    const add_homework = () => {
+
+    const edit_homework = () => {
         const today = new Date()
         // checking of data 
-        if (description == '' || selected_classe_name == 'Choisir une classe' || new Date(due_date) < today ){
+        if (description == '' || new Date(due_date) < today ){
             toast.error("Aucune description ou aucune classe selectionné ou date invalide", {style: {
                 padding: '16px',
                 fontSize: '20px'
             },})
-        }else{
-            mutation.mutate({description: description, due_date: new Date(due_date).toISOString().split('T')[0], classe: selected_classe_name })
+        }
+        //check if edit was made 
+        else if (description == state_description && due_date == state_due_date && selected_classe_name == state_classe_name){
+            toast.error("Aucune modification a été faite", {style: {
+                padding: '16px',
+                fontSize: '20px'
+            },})
+        }
+        else{
+            mutation.mutate({homework_id: state_homework_id, description: description, due_date: new Date(due_date).toISOString().split('T')[0], classe: selected_classe_name })
         }
     }
-
+    
     return(
         <>
             <Toaster position='top-right'/>
@@ -62,12 +84,11 @@ export default function Teacher_add_homeworks(){
             { !isLoading && 
                 <div className=" flex-1 mb-6 w-full border-b-4 border-primary-blue pb-4">
                     <select className="input_alone_other" onChange={(e) => {
-                      setSelected_classe_name(e.target.value) 
+                      setSelected_classe_name(e.target.options[e.target.selectedIndex].text) 
                     } 
                         }>
-                        <option value='Choisir une classe'>Choisir une classe</option>
                     {all_classes.map(({id, name}: Classe_interface ) => (
-                        <option key={id} value={name}>{name}</option>
+                        <option key={id} value={id} selected={name == selected_classe_name}>{name}</option>
                     ))}
                     </select>
                 </div>
@@ -88,7 +109,7 @@ export default function Teacher_add_homeworks(){
                 
 
                 {/* Container */}
-                <div className="w-full mt-5 ">
+                <div className="w-full ">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-primary-blue to-primary-beige text-white px-6 py-3 rounded-t-(--my-radius) font-semibold text-lg">
                     Pour : {selected_classe_name}
@@ -106,10 +127,10 @@ export default function Teacher_add_homeworks(){
 
                 {/* Submit button */}
                 <button
-                    onClick={add_homework}
-                    className="hover:cursor-pointer w-50 mt-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-(--my-radius)"
+                    onClick={edit_homework}
+                    className="hover:cursor-pointer w-50 mt-6 bg-orange-300 hover:bg-orange-400 text-white font-semibold px-6 py-2 rounded-(--my-radius)"
                 >
-                    Valider
+                    Modifier
                 </button>
             </div>
         </>
