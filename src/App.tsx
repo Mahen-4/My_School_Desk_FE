@@ -14,6 +14,8 @@ import Teacher_edit_homeworks from './pages/homeworks/teacher_edit_homeworks';
 import Students_homeworks from './pages/homeworks/student_homeworks';
 import Teacher_add_results from './pages/results/teacher_add_results';
 import Teacher_results from './pages/results/teacher_results';
+import Teacher_edit_results from './pages/results/teacher_edit_results';
+import Student_results from './pages/results/student_results';
 
 // type User_interface = {
 //   first_name: string,
@@ -50,6 +52,7 @@ function App() {
               <Route element={<Protected_route condition={user?.is_student} redirectTo="/" />}>
                 <Route path="student/accueil" element={<Student_home />} />
                 <Route path='student/devoirs' element={<Students_homeworks />} />
+                <Route path='student/notes' element={<Student_results />} />
               </Route>
               <Route element={<Protected_route condition={user?.is_teacher} redirectTo="/" />}>
                 <Route path="teacher/accueil" element={<Teacher_home />} />
@@ -58,6 +61,8 @@ function App() {
                 <Route path="teacher/devoirs/modifier" element={<Teacher_edit_homeworks />} />
                 <Route path="teacher/notes" element={<Teacher_results />}/>
                 <Route path="teacher/notes/ajouter" element={<Teacher_add_results />}/>
+                <Route path="teacher/notes/modifier" element={<Teacher_edit_results />}/>
+                
               </Route>
             </Route>
           )}

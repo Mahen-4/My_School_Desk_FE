@@ -31,8 +31,8 @@ export default function Students_homeworks(){
             <div className="flex-1 w-full p-6 ">
 
                 {/* get all subjects from db */}
-                <div className="mb-6 w-full border-b-4 border-primary-blue pb-4">
-
+                <div className="flex items-center justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+                    <span>Devoirs à faire : <span className="text-lg text-primary-blue font-bold">{Object.keys(all_homeworks).length}</span></span>
                     <select className="rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-l w-60 h-12" onChange={(e)=>{
                         setSelected_subject(e.target.options[e.target.selectedIndex].text) 
                     }}>

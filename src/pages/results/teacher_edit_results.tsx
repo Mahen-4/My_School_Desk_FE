@@ -1,107 +1,77 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { use_get_all_classes, type Classe_interface, type Student_full_name_interface } from '../../api/classes_api';
-import { get_classe_students } from '../../api/classes_api';
 import { useMutation } from '@tanstack/react-query';
+import React, { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { add_results_db } from '../../api/results_api';
+import { useLocation } from 'react-router-dom';
+import { edit_results_db } from '../../api/results_api';
 
 
+export default function Teacher_edit_results() {
 
-export default function Teacher_add_results() {
 
-    const {data: all_classes, isLoading} = use_get_all_classes() as {
-                data: Classe_interface[],
-                isLoading: boolean
-            }
-    const [exam_title, setExam_title]= useState("")
-    const [all_students, setAll_students] = useState<Student_full_name_interface[]>()
-    const all_string = 'Choisir une classe'
+    const { state } = useLocation(); //get state 
+   
+    if (!state) { //if no state
+        return <p>Pas de données fournies</p>;
+    }
 
-    const [result_on, setResult_on] = useState(20);
-    const [selected_classe_name, setSelected_classe_name]  = useState("")
+    const { state_title, state_classe,  state_results, state_result_on } = state; // get state data
+    
+    const [exam_title, setExam_title]= useState(state_title)
+
+    const [result_on, setResult_on] = useState(state_result_on);
 
     const [average, setAverage] = useState(0)
 
     const [all_results, setAll_results] = useState<{ [key: string]: number }>({});
 
-    const mutation = useMutation({
-        mutationFn: get_classe_students, //get students full names of the classe
-        onSuccess: (data) => {
-           setAll_students(data)
-        },
-        onError: (err: any) => {
-        // if response
-        if (err.response && err.response.data) {   
-            toast.error(err.response.data.error, {style: {
-            padding: '16px',
-            fontSize: '20px'
-            },})
-        } 
-        else {
-            toast.error("Erreur inconnue", {style: {
-                padding: '16px',
-                fontSize: '20px'
-            },})
-        }
-        
-        }
-    })
-
-    const mutation_add = useMutation({
-        mutationFn: add_results_db, //add results request
-        onSuccess: () => {
-            toast.success("Résultats ajoutés", {style: {
-            padding: '16px',
-            fontSize: '20px'
-            },})
-        },
-        onError: (err: any) => {
-        // if response
-        if (err.response && err.response.data) {   
-            toast.error(err.response.data.error, {style: {
-            padding: '16px',
-            fontSize: '20px'
-            },})
-        } 
-        else {
-            toast.error("Erreur inconnue", {style: {
-                padding: '16px',
-                fontSize: '20px'
-            },})
-        }
-        
-        }
-    })
-
-    // make a dict of students in the classe with a result
+    //get average of the exams before editing
     useEffect(()=> {
-        if(all_students){
-            Object.keys(all_students).map((key:any)=> {
-                all_results[key] = 0
-            })
+        Object.values(state_results).forEach((result: any)=> {
+            all_results[result.result_id] = result.student_score
+            let sum_array = Object.values(all_results).reduce((acc: number, val: any) => acc + val, 0)
+            let avg = sum_array / Object.keys(all_results).length
+            setAverage(avg)
+        })
+    },[])
+
+    const mutation = useMutation({
+        mutationFn: edit_results_db, //edit results request
+        onSuccess: () => {
+            toast.success("Résultats modifiés", {style: {
+            padding: '16px',
+            fontSize: '20px'
+            },})
+        },
+        onError: (err: any) => {
+        // if response
+        if (err.response && err.response.data) {   
+            toast.error(err.response.data.error, {style: {
+            padding: '16px',
+            fontSize: '20px'
+            },})
+        } 
+        else {
+            toast.error("Erreur inconnue", {style: {
+                padding: '16px',
+                fontSize: '20px'
+            },})
         }
-    },[all_students])
         
-  return (
+        }
+    })
+
+    return (
     <>
     <Toaster position='top-right'/>
-     {/* get all classes from db */}
-        { !isLoading && 
-            <div className=" flex-1 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
-                <input onChange={(e)=>setExam_title(e.target.value)} placeholder="Titre de l'examen" type='text' maxLength={150} className='input_alone_text'/>
-                <select className="input_alone_other" onChange={(e) => {
-                    setSelected_classe_name(e.target.value) 
-                    //each change of classe make request to back to get students info
-                    e.target.value != all_string ? mutation.mutate(e.target.value) : setAll_students([])
-                } 
-                    }>
-                    <option value={all_string}>{all_string}</option>
-                {all_classes.map(({id, name}: Classe_interface ) => (
-                    <option key={id} value={name}>{name}</option>
-                ))}
-                </select>
+     {/* top with title field and classe indication */}
+        { state && 
+            <div className=" flex-1 flex items-center justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+                <input defaultValue={state_title} onChange={(e)=>setExam_title(e.target.value)} placeholder="Titre de l'examen" type='text' maxLength={150} className='input_alone_text'/>
+                <h2>Classe : <span className='text-xl text-primary-blue font-bold'>{state_classe}</span></h2>
             </div>
         }
+
+
         <div className="w-335 p-6 bg-[#f9f6f2] min-h-screen flex flex-col items-center space-y-6">
             {/* result on */}
             <div className="self-start text-sm">
@@ -111,7 +81,7 @@ export default function Teacher_add_results() {
             {/* title */}
             <div className="w-full max-w-3xl bg-gradient-to-r from-primary-blue to-primary-beige text-white text-xl px-4 py-2 rounded-t-(--my-radius)">
                 <span className="font-semibold">Titre :</span> {exam_title} 
-                <span className="ml-2 font-semibold">Classe :</span> {selected_classe_name}
+                <span className="ml-2 font-semibold">Classe :</span> {state_classe}
             </div>
 
             {/* table */}
@@ -124,22 +94,24 @@ export default function Teacher_add_results() {
                 </tr>
                 </thead>
                 <tbody>
-                { all_students && 
-                
-                Object.keys(all_students || []).map((key: any) => (
-                    <tr key={key} className="border-b">
-                    <td className="px-4 py-2 border">{all_students[key].last_name}</td>
-                    <td className="px-4 py-2 border">{all_students[key].first_name}</td>
+                {/* loop over all results  */}
+                { state && 
+                Object.values(state_results || []).map((result: any) => (
+                    <tr key={result.result_id} className="border-b">
+                    <td className="px-4 py-2 border">{result.student_last_name}</td>
+                    <td className="px-4 py-2 border">{result.student_first_name}</td>
                     <td className="px-4 py-2 border">
                         <select
+                        defaultValue={result.student_score}
                         onChange={(e)=>{
                             // clone dict et update
                             const updated = {
                                 ...all_results,
-                                [key]: Number(e.target.value),
+                                [result.result_id]: Number(e.target.value),
                             };
                             setAll_results(updated)
-
+                            
+                            //get average
                             let sum_array = Object.values(updated).reduce((acc: number, val: any) => acc + val, 0)
                             let avg = sum_array / Object.keys(updated).length
                             setAverage(avg)
@@ -171,17 +143,17 @@ export default function Teacher_add_results() {
             <button 
             onClick={()=>{
                 //values checking before mutation
-                if(Object.keys(all_students || []).length == 0 || exam_title == '' || selected_classe_name == all_string){
-                   toast.error("Champs vide ou classe non renseignée ", {style: {
+                if(exam_title == '' ){
+                   toast.error("Champs titre vide", {style: {
                         padding: '16px',
                         fontSize: '20px'
                     },}) 
                 }else{
-                    mutation_add.mutate({title:exam_title, classe_name:selected_classe_name, result_on: result_on, all_results:all_results})
+                    mutation.mutate({title:exam_title, result_on: result_on, all_results:all_results})
                 }
             }}
-            className="bg-green-400 hover:bg-green-500 text-white font-medium px-6 py-2 rounded-(--my-radius)    shadow">
-                Valider
+            className="hover:cursor-pointer ml-140 bg-orange-400 hover:bg-orange-500 text-white font-medium px-6 py-2 rounded-(--my-radius)    shadow">
+                Modifier
             </button>
         </div>
     </>
