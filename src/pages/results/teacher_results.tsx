@@ -28,7 +28,7 @@ export default function Teacher_results(){
         <>
         <Toaster position="top-right"/>
          {/* search input */}
-        <div className="mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+        <div className=" mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
             <input onChange={(e)=> setSearch(e.target.value)} placeholder="Recherche par titre d'examen ou nom de classe" type='text' maxLength={150} className='input_alone_text'/>
             <NavLink to='/teacher/notes/ajouter' className="mb-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded">
                     Ajouter des notes &gt;
@@ -38,7 +38,7 @@ export default function Teacher_results(){
         {/* all exams in table format  -- filtered by search bar*/}
         {!isPending && 
         Object.keys(created_exams).filter((one_exam:any)=>(
-            one_exam.includes(search) 
+            one_exam.toLowerCase().includes(search.toLowerCase()) 
         )).map((title:any)=>(
             
             <div key={title} className="w-335 p-6 bg-[#f9f6f2] flex flex-col items-center ">

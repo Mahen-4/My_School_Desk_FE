@@ -16,6 +16,9 @@ import Teacher_add_results from './pages/results/teacher_add_results';
 import Teacher_results from './pages/results/teacher_results';
 import Teacher_edit_results from './pages/results/teacher_edit_results';
 import Student_results from './pages/results/student_results';
+import Teacher_quiz from './pages/quiz/teacher_quiz';
+import Teacher_add_quiz from './pages/quiz/teacher_add_quiz';
+import Teacher_edit_quiz from './pages/quiz/teacher_edit_quiz';
 
 // type User_interface = {
 //   first_name: string,
@@ -62,6 +65,10 @@ function App() {
                 <Route path="teacher/notes" element={<Teacher_results />}/>
                 <Route path="teacher/notes/ajouter" element={<Teacher_add_results />}/>
                 <Route path="teacher/notes/modifier" element={<Teacher_edit_results />}/>
+                <Route path="teacher/quiz" element={<Teacher_quiz />} />
+                <Route path="teacher/quiz/ajouter" element={<Teacher_add_quiz />} />
+                <Route path="teacher/quiz/modifier" element={<Teacher_edit_quiz />} />
+                
                 
               </Route>
             </Route>

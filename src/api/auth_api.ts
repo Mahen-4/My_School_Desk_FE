@@ -92,3 +92,19 @@ export const use_current_user = ()=>{
     staleTime: 1000 * 60 * 15 // cache data expire in 15minutes
   });
 }
+
+
+export const logout = async() => {
+    
+    const csrfToken = Cookies.get("csrftoken"); //get csrf token
+
+    const res = await axios.post('http://localhost:8000/auth/logout/',{}, {
+        headers: {
+        "X-CSRFToken": csrfToken ?? "", //send csrf token
+        'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+    })
+
+    return res.data
+}

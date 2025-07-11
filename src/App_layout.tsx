@@ -1,15 +1,44 @@
 // src/components/Layout.tsx
+import { useMutation } from '@tanstack/react-query';
 import { FaHome, FaBook, FaClipboardList, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { logout } from './api/auth_api';
+import { useNavigate } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function App_layout() {
 
 
-  let user_type = useLocation().pathname.split('/')[1]
-  let location = useLocation().pathname.split('/')[2]
+  let user_type = useLocation().pathname.split('/')[1] //get student or teacher
+  let location = useLocation().pathname.split('/')[2] // get current location
+
+  const navigate = useNavigate()
+
+  const mutation = useMutation({
+    mutationFn: logout,
+    onSuccess: ()=> navigate('/'),
+    onError: (err: any) => {
+        // if response
+        if (err.response && err.response.data) {   
+            toast.error(err.response.data.error, {style: {
+            padding: '16px',
+            fontSize: '20px'
+            },})
+        } 
+        else {
+            toast.error("Erreur inconnue", {style: {
+                padding: '16px',
+                fontSize: '20px'
+            },})
+        }
+        
+        }
+
+  })
 
   return (
     <div className="flex min-h-screen">
+      <Toaster position='top-right' />
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-md flex flex-col justify-between px-4 py-6 fixed h-screen">
         <div>
@@ -45,10 +74,10 @@ export default function App_layout() {
           </div>
         </div>
 
-        <NavLink to="/logout" className="flex items-center gap-3 p-2 mt-6 text-gray-700 font-medium hover:bg-red-100 rounded-md">
+        <p onClick={()=> mutation.mutate()} className="hover:cursor-pointer flex items-center gap-3 p-2 mt-6 text-gray-700 font-medium hover:bg-red-100 rounded-md">
           <FaSignOutAlt className="text-xl text-red-500" />
           Déconnexion
-        </NavLink>
+        </p>
       </div>
 
       {/* Main content */}
