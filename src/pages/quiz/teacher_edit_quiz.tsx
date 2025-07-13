@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { use_get_all_classes, type Classe_interface } from "../../api/classes_api"
 import { FaTimes } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
-import { add_quiz_db, delete_question_db, edit_quiz_db, get_quiz_info } from "../../api/quiz_api";
+import { add_quiz_db, delete_question_db, edit_quiz_db, get_quiz_info, get_quiz_questions_responses } from "../../api/quiz_api";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -35,7 +35,7 @@ export default function Teacher_edit_quiz(){
 
     //make post request to backend
     const mutation = useMutation({
-        mutationFn: get_quiz_info,
+        mutationFn: get_quiz_questions_responses,
         onSuccess: (data)=>{
             setAll_data(data)
         },

@@ -57,7 +57,7 @@ export default function Teacher_add_quiz(){
                 padding: '16px',
                 fontSize: '20px'
             },})
-            //navigate('/teacher/quiz')
+            navigate('/teacher/quiz')
         },
         onError: (err: any) => {
             // if response
@@ -137,8 +137,9 @@ export default function Teacher_add_quiz(){
                     Question {question_number} :
                     </label>
                     <input
+                    
                     type="text"
-                    className="input_alone_text !w-190"
+                    className="question_responses input_alone_text !w-190"
                     placeholder="Question"
                     onChange={(e)=> setQuestion(e.target.value)}
                     />
@@ -150,7 +151,7 @@ export default function Teacher_add_quiz(){
                     <div className="flex justify-between items-center border border-primary-blue rounded-(--my-radius) px-4 py-3 bg-white shadow-sm">
                     <input
                         type="text"
-                        className="input_alone_text !w-130"
+                        className="question_responses input_alone_text !w-130"
                         placeholder="Réponse 1"
                         onChange={(e)=> update_responses_text(0, e.target.value)}
                     />
@@ -165,7 +166,7 @@ export default function Teacher_add_quiz(){
                     <div className="flex justify-between items-center border border-primary-blue rounded-(--my-radius) px-4 py-3 bg-white shadow-sm">
                     <input
                         type="text"
-                        className="input_alone_text !w-130"
+                        className="question_responses input_alone_text !w-130"
                         placeholder="Réponse 2"
                         onChange={(e)=> update_responses_text(1, e.target.value)}
                     />
@@ -180,7 +181,7 @@ export default function Teacher_add_quiz(){
                     <div className="flex justify-between items-center border border-primary-blue rounded-(--my-radius) px-4 py-3 bg-white shadow-sm">
                     <input
                         type="text"
-                        className="input_alone_text !w-130"
+                        className="question_responses input_alone_text !w-130"
                         placeholder="Réponse 3"
                         onChange={(e)=> update_responses_text(2, e.target.value)}
                     />
@@ -195,7 +196,7 @@ export default function Teacher_add_quiz(){
                     <div className="flex justify-between items-center border border-primary-blue rounded-(--my-radius) px-4 py-3 bg-white shadow-sm">
                     <input
                         type="text"
-                        className="input_alone_text !w-130"
+                        className=" question_responsesinput_alone_text !w-130"
                         placeholder="Réponse 4"
                         onChange={(e)=> update_responses_text(3, e.target.value)}
                     />
@@ -217,6 +218,20 @@ export default function Teacher_add_quiz(){
                     }else{
                         //on click add question and responses to all data 
                         setAll_data((prev:any) => ({...prev, [question]: responses}))
+                        
+                        //uncheck all responses
+                        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                        checkboxes.forEach((checkbox:any) => {
+                            checkbox.checked = false;
+                        });
+
+                        //uncheck question and all responses
+                        const question_responses = document.querySelectorAll<HTMLInputElement>('input.question_responses');
+                        question_responses.forEach((input:any) => {
+                            input.value = '';
+                        });
+
+                        //empty question
                         
                         //empty every state responses 
                         setResponses([

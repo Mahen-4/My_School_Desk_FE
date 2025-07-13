@@ -19,6 +19,9 @@ import Student_results from './pages/results/student_results';
 import Teacher_quiz from './pages/quiz/teacher_quiz';
 import Teacher_add_quiz from './pages/quiz/teacher_add_quiz';
 import Teacher_edit_quiz from './pages/quiz/teacher_edit_quiz';
+import Student_quiz from './pages/quiz/student_quiz';
+import Student_quiz_info from './pages/quiz/student_quiz_info';
+import Student_quiz_play from './pages/quiz/student_quiz_play';
 
 // type User_interface = {
 //   first_name: string,
@@ -56,7 +59,12 @@ function App() {
                 <Route path="student/accueil" element={<Student_home />} />
                 <Route path='student/devoirs' element={<Students_homeworks />} />
                 <Route path='student/notes' element={<Student_results />} />
+                <Route path='student/quiz' element={<Student_quiz />} />
+                <Route path='student/quiz/info' element={<Student_quiz_info />} />
+                <Route path='student/quiz/jouer' element={<Student_quiz_play />} />
+
               </Route>
+              
               <Route element={<Protected_route condition={user?.is_teacher} redirectTo="/" />}>
                 <Route path="teacher/accueil" element={<Teacher_home />} />
                 <Route path="teacher/devoirs" element={<Teacher_homeworks />} />
@@ -67,9 +75,7 @@ function App() {
                 <Route path="teacher/notes/modifier" element={<Teacher_edit_results />}/>
                 <Route path="teacher/quiz" element={<Teacher_quiz />} />
                 <Route path="teacher/quiz/ajouter" element={<Teacher_add_quiz />} />
-                <Route path="teacher/quiz/modifier" element={<Teacher_edit_quiz />} />
-                
-                
+                <Route path="teacher/quiz/modifier" element={<Teacher_edit_quiz />} />  
               </Route>
             </Route>
           )}

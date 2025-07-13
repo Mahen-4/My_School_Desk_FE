@@ -33,11 +33,11 @@ export const use_get_quiz_created = ()=>{
   });
 }
 
-export const get_quiz_info = async(id:number) => {
+export const get_quiz_questions_responses = async(id:number) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/quiz/get_quiz_info', id, {
+  const res = await axios.post('http://localhost:8000/quiz/get_quiz_questions_responses', id, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -84,6 +84,50 @@ export const delete_quiz_db = async(quiz_id: Number) => {
             "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
             'Content-Type': 'application/json',
             },
+        withCredentials: true,
+  })
+  return res.data
+}
+
+
+export const get_classe_quiz = async()=>{
+    const res = await axios.get("http://localhost:8000/quiz/get_classe_quiz", {
+    withCredentials: true,  
+  });
+
+  return res.data
+}
+
+//execute request and store in cache
+export const use_get_classe_quiz = ()=>{
+  return useQuery({
+    queryKey: ['classe_quiz'],
+    queryFn: get_classe_quiz,
+  });
+}
+
+export const get_quiz_info = async(id:number) => {
+
+  const csrfToken = Cookies.get("csrftoken"); //get csrf token
+
+  const res = await axios.post('http://localhost:8000/quiz/get_quiz_info', id, {
+    headers: {
+        "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
+        'Content-Type': 'application/json',
+        },
+        withCredentials: true,
+  })
+  return res.data
+}
+
+export const add_attempt = async(data: {quiz_id: number, score:string}) => {
+  const csrfToken = Cookies.get("csrftoken"); //get csrf token
+
+  const res = await axios.post('http://localhost:8000/quiz/add_attempt', data, {
+    headers: {
+        "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
+        'Content-Type': 'application/json',
+        },
         withCredentials: true,
   })
   return res.data
