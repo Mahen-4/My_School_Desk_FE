@@ -15,13 +15,13 @@ export default function Teacher_quiz(){
             <Toaster position="top-right"/>
 
              {/* search input */}
-            <div className="mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+            <div className="header_page">
                 <input onChange={(e)=> setSearch(e.target.value)} placeholder="Recherche par titre" type='text' maxLength={150} className='input_alone_text'/>
-                <NavLink to='/teacher/quiz/ajouter' className="mb-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)">
+                <NavLink to='/teacher/quiz/ajouter' className="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)">
                         Ajouter un quiz &gt;
                 </NavLink>
             </div>
-            <div className="w-335 flex justify-center gap-8 py-10 bg-[#fcf8f2]">
+            <div className="w-full flex justify-center gap-8 py-10 bg-[#fcf8f2]">
                 {/* all quiz  loop over all created*/}
                 {!isLoading && 
                     Object.keys(quiz_created).filter((quiz_id: any)=> (

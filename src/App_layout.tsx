@@ -5,7 +5,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { logout, use_current_user } from './api/auth_api';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import { use_get_last_homeworks } from './api/homeworks_api';
+import { use_get_all_homeworks_created_teacher, use_get_last_homeworks, use_get_last_homeworks_created_teacher } from './api/homeworks_api';
 import { use_get_last_results } from './api/results_api';
 import { useState } from 'react';
 
@@ -17,10 +17,13 @@ export default function App_layout() {
 
   const navigate = useNavigate()
 
+  const { data: user } = use_current_user();
   const {data: last_homeworks, isLoading} = use_get_last_homeworks()
   const {data: last_results, isPending} = use_get_last_results()
-  const { data: user, isFetching } = use_current_user();
-  
+  const {data: last_homeworks_created, isFetching} = use_get_last_homeworks_created_teacher()
+
+  const should_fetch_user_type = sessionStorage.getItem("user_type");
+
 
   const mutation = useMutation({
     mutationFn: logout,
@@ -53,7 +56,7 @@ export default function App_layout() {
     <div className="flex min-h-screen">
       <Toaster position='top-right' />
       {/* Sidebar */}
-      {/* Bouton burger visible seulement sur mobile */}
+      {/* Bouton burger  mobile */}
       <button
         onClick={toggleSidebar}
         className="sm:block md:hidden p-4 text-primary-blue text-2xl fixed top-0 left-0 z-50"
@@ -61,10 +64,10 @@ export default function App_layout() {
         <FaBars />
       </button>
 
-      {/* Overlay sur fond sombre en mobile */}
+      {/* Overlay  in mobile */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-30 z-40 sm:block md:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 sm:block md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -132,13 +135,16 @@ export default function App_layout() {
           <span className="text-gray-700 font-medium">{user.last_name.toUpperCase()} {user.first_name}</span>
         </div>
 
-        <div className="mb-6">
+        {should_fetch_user_type == "student" ?
+            <div className="mb-6">
+        
               <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
                 <span>Devoir à faire</span>
                 <NavLink to={`/${user_type}/devoirs`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
               </div>
+
               <div className="space-y-4">
-                {!isLoading && last_homeworks.map((homework:any, index:number) => (
+                {!isLoading  && last_homeworks.map((homework:any, index:number) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1  rounded-(--my-radius)">
                       {homework.due_date}
@@ -150,13 +156,14 @@ export default function App_layout() {
                   </div>
                 ))}
               </div>
-            </div>
 
-            <div>
-              <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
-                <span>Dernières notes ajoutées</span>
-                <NavLink to={`/${user_type}/notes`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+              <div>
+                <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
+                  <span>Dernières notes ajoutées</span>
+                  <NavLink to={`/${user_type}/notes`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+                </div>
               </div>
+
               <div className="space-y-4">
                 {!isPending && last_results.map((result:any, index:number) => (
                   <div key={index} className="flex gap-3 ">
@@ -171,7 +178,29 @@ export default function App_layout() {
                 ))}
               </div>
             </div>
-          </div>
-        </div>
+            :
+            <div>
+              <div className="flex justify-between items-center text-primary-blue font-semibold mb-5">
+                <span>Derniers devoirs ajoutés</span>
+                <NavLink to={`/${user_type}/devoirs`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+              </div>
+
+              <div className="space-y-4">
+                {!isFetching && last_homeworks_created.map((homework:any, index:number) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1  rounded-(--my-radius)">
+                      {homework.homework_due_date}
+                    </div>
+                    <div>
+                      <div className="text-gray-800">{homework.homework_description}</div>
+                      <div className="text-gray-400 text-xs">Pour : {homework.classe_name}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+        }   
+      </div>
+    </div>
   );
 }

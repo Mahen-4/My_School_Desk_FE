@@ -25,8 +25,11 @@ export default function Digi_code_verif() {
     mutationFn: digi_code_check, //make request
     onSuccess: (data : any) => {
         queryClient.setQueryData(["user"], data); // data to cache
+        sessionStorage.setItem("is_logIn", "true"); //session data
+        sessionStorage.setItem("user_type", data.is_teacher == true ? "teacher" : "student"); //session data
+        sessionStorage.removeItem("pending2FA") //delete session item
         data.is_teacher == true ? navigate('/teacher/accueil') :  navigate('/student/accueil') // redirect 
-       
+
     },
     onError: (err: any) => {
       // if response
@@ -56,13 +59,13 @@ export default function Digi_code_verif() {
       {/* Right - digital code form */}
       <div className="w-full px-0 md:w-1/2 bg-gray-50 flex flex-col justify-center md:px-60 ">
         {/* Logo */}
-        <div className="mb-12 flex items-center space-x-3">
+        <div className="mb-12 flex items-center flex justify-center space-x-3">
           <img src="/images_icons/logo-no-text.png" alt="MySchoolDesk logo" className="w-10 h-10" />
           <span className="font-semibold text-primary-blue text-xl">MySchoolDesk</span>
         </div>
 
         {/* Form */}
-        <form className="max-w-md w-full" onSubmit={(event: React.FormEvent)=> {
+        <form className="md:max-w-md w-screen p-4" onSubmit={(event: React.FormEvent)=> {
             event.preventDefault()
             mutation.mutate({digi_code: Number(code_input_ref.current?.value) })
           }}>

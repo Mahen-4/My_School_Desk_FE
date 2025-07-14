@@ -60,7 +60,7 @@ export default function Teacher_add_homeworks(){
             <Toaster position='top-right'/>
             {/* get all classes from db */}
             { !isLoading && 
-                <div className=" flex-1 mb-6 w-full border-b-4 border-primary-blue pb-4">
+                <div className="header_page">
                     <select className="input_alone_other" onChange={(e) => {
                       setSelected_classe_name(e.target.value) 
                     } 
@@ -74,7 +74,7 @@ export default function Teacher_add_homeworks(){
             }
 
 
-            <div className="w-335 flex flex-col p-4">
+            <div className="w-full flex flex-col p-4">
                 {/* Date picker */}
                 <div>
                     <label>A rendre pour le : </label>

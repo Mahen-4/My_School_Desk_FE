@@ -28,9 +28,9 @@ export default function Teacher_results(){
         <>
         <Toaster position="top-right"/>
          {/* search input */}
-        <div className=" mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+        <div className="header_page">
             <input onChange={(e)=> setSearch(e.target.value)} placeholder="Recherche par titre d'examen ou nom de classe" type='text' maxLength={150} className='input_alone_text'/>
-            <NavLink to='/teacher/notes/ajouter' className="mb-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded">
+            <NavLink to='/teacher/notes/ajouter' className="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded">
                     Ajouter des notes &gt;
             </NavLink>
         </div>
@@ -41,9 +41,9 @@ export default function Teacher_results(){
             one_exam.toLowerCase().includes(search.toLowerCase()) 
         )).map((title:any)=>(
             
-            <div key={title} className="w-335 p-6 bg-[#f9f6f2] flex flex-col items-center ">
+            <div key={title} className=" p-6 bg-[#f9f6f2] flex flex-col items-center ">
                     {/* title */}
-                    <div className="flex justify-between w-full max-w-3xl bg-gradient-to-r from-primary-blue to-primary-beige text-white text-xl px-4 py-2 rounded-t-(--my-radius)">
+                    <div className="flex justify-between w-full max-w-3xl bg-gradient-to-r from-primary-blue to-primary-beige text-white md:text-xl px-4 py-2 rounded-t-(--my-radius)">
                         <div>
                             <span className="font-semibold">Titre : {title.split('-')[0]} ---</span> 
                             <span className="ml-2 font-semibold">Classe : {title.split('-')[1]}</span>
@@ -60,7 +60,7 @@ export default function Teacher_results(){
                                         }
                                     })
                                 }}
-                                className="mr-3 hover:cursor-pointer bg-orange-300 text-white text-xs rounded-(--my-radius) px-3 py-1 hover:bg-orange-400 transition">
+                                className=" hover:cursor-pointer bg-orange-300 text-white text-xs rounded-(--my-radius) px-3 py-1 hover:bg-orange-400 transition">
                                 Modifier
                             </button>
                             <button onClick={()=>{
@@ -82,7 +82,7 @@ export default function Teacher_results(){
                     </div>
 
                     {/* table */}
-                    <table className="w-full max-w-3xl border border-collapse text-sm text-center bg-white shadow-md rounded-b-(--my-radius) overflow-hidden">
+                    <table className="w-full md:max-w-3xl border border-collapse text-sm text-center bg-white shadow-md rounded-b-(--my-radius) overflow-hidden">
                         <thead>
                         <tr className="bg-gray-100 border-b">
                             <th className="px-4 py-2 border">Nom</th>

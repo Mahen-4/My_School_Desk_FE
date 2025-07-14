@@ -82,7 +82,7 @@ export default function Teacher_edit_homeworks(){
             <Toaster position='top-right'/>
             {/* get all classes from db */}
             { !isLoading && 
-                <div className=" flex-1 mb-6 w-full border-b-4 border-primary-blue pb-4">
+                <div className="header_page">
                     <select className="input_alone_other" onChange={(e) => {
                       setSelected_classe_name(e.target.options[e.target.selectedIndex].text) 
                     } 
@@ -95,7 +95,7 @@ export default function Teacher_edit_homeworks(){
             }
 
 
-            <div className="w-335 flex flex-col p-4">
+            <div className="w-full flex flex-col p-4">
                 {/* Date picker */}
                 <div>
                     <label>A rendre pour le : </label>
@@ -109,7 +109,7 @@ export default function Teacher_edit_homeworks(){
                 
 
                 {/* Container */}
-                <div className="w-full ">
+                <div className="w-full mt-5">
                     {/* Header */}
                     <div className="bg-gradient-to-r from-primary-blue to-primary-beige text-white px-6 py-3 rounded-t-(--my-radius) font-semibold text-lg">
                     Pour : {selected_classe_name}

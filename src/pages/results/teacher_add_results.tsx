@@ -87,7 +87,7 @@ export default function Teacher_add_results() {
     <Toaster position='top-right'/>
      {/* get all classes from db */}
         { !isLoading && 
-            <div className=" flex-1 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+            <div className="header_page">
                 <input onChange={(e)=>setExam_title(e.target.value)} placeholder="Titre de l'examen" type='text' maxLength={150} className='input_alone_text'/>
                 <select className="input_alone_other" onChange={(e) => {
                     setSelected_classe_name(e.target.value) 
@@ -102,7 +102,7 @@ export default function Teacher_add_results() {
                 </select>
             </div>
         }
-        <div className="w-335 p-6 bg-[#f9f6f2] min-h-screen flex flex-col items-center space-y-6">
+        <div className="w-full p-6 bg-[#f9f6f2] min-h-screen flex flex-col items-center space-y-6">
             {/* result on */}
             <div className="self-start text-sm">
                 Notes sur : <input defaultValue={result_on} onChange={(e)=> setResult_on(Number(e.target.value))}type='number' min={1} className='input_alone_other !w-20 !h-10 '/>

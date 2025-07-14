@@ -132,7 +132,7 @@ export default function Teacher_edit_quiz(){
         <>
             {/*header */}
             <Toaster position="top-right"/>
-            <div className="mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4 ">
+            <div className="header_page ">
                 <input 
                     defaultValue={state_quiz_title}
                     onChange={(e) => setQuiz_title(e.target.value)} 
@@ -154,12 +154,12 @@ export default function Teacher_edit_quiz(){
                         }
 
                     }}
-                    className="mb-6 bg-orange-400 hover:bg-orange-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)"
+                    className="bg-orange-400 hover:bg-orange-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)"
                 >
                     Modifier le quiz &gt;
                 </button>
             </div>
-            <div className="w-335 min-h-screen bg-[#fcf8f2] p-6 space-y-6 font-sans">
+            <div className="w-full min-h-screen bg-[#fcf8f2] p-6 space-y-6 font-sans">
 
                 {/* classe and description */}
                 {!isLoading && 
@@ -209,7 +209,7 @@ export default function Teacher_edit_quiz(){
                             <input
                                 defaultValue={question_title}
                                 type="text"
-                                className="input_alone_text !w-190"
+                                className="input_alone_text md:!w-190"
                                 placeholder="Question"
                                 onBlur={(e)=> {
                                     update_all_data_questions(index, e.target.value)

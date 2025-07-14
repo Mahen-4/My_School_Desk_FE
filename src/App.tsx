@@ -44,7 +44,7 @@ function App() {
   }
 
   return (
-    <div className='flex'>
+    <div className=''>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login />} />

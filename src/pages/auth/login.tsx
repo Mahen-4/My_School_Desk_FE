@@ -62,13 +62,13 @@ export default function Login() {
       {/* Right - login form */}
       <div className="w-full px-0 md:w-1/2 bg-gray-50 flex flex-col justify-center md:px-60 ">
         {/* Logo */}
-        <div className="mb-12 flex items-center space-x-3">
+        <div className="mb-12 flex items-center flex justify-center space-x-3">
           <img src="/images_icons/logo-no-text.png" alt="MySchoolDesk logo" className="w-10 h-10" />
           <span className="font-semibold text-primary-blue text-xl">MySchoolDesk</span>
         </div>
 
         {/* Form */}
-        <form className="max-w-md w-full" action="" onSubmit={login_check}>
+        <form className="md:max-w-md w-screen p-4" action="" onSubmit={login_check}>
           <h2 className="text-3xl font-bold text-primary-blue mb-2">Connexion</h2>
           <p className="mb-8 text-sm text-gray-500">Avec votre email et mot de passe</p>
 

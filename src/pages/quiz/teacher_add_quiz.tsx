@@ -79,7 +79,7 @@ export default function Teacher_add_quiz(){
         <>
          {/*header */}
             <Toaster position="top-right"/>
-            <div className="mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4 ">
+            <div className="header_page ">
                 <input onChange={(e)=> setQuiz_title(e.target.value)} placeholder="Titre du quiz" type='text' maxLength={150} className='input_alone_text'/>
                 <button 
                 onClick={()=>{
@@ -94,11 +94,11 @@ export default function Teacher_add_quiz(){
                         mutation.mutate({title:quiz_title, description: quiz_description, classes: chosen_classes, questions_responses:all_data })
                     }
                 }}
-                className="mb-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)">
+                className="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded-(--my-radius)">
                         Valider la création du quiz &gt;
                 </button>
             </div>
-            <div className="w-335 min-h-screen bg-[#fcf8f2] p-6 space-y-6 font-sans">
+            <div className="w-full min-h-screen bg-[#fcf8f2] p-6 space-y-6 font-sans">
 
                 {/* classe and description */}
                 {!isLoading && 
@@ -139,7 +139,7 @@ export default function Teacher_add_quiz(){
                     <input
                     
                     type="text"
-                    className="question_responses input_alone_text !w-190"
+                    className="question_responses input_alone_text md:!w-190"
                     placeholder="Question"
                     onChange={(e)=> setQuestion(e.target.value)}
                     />

@@ -65,14 +65,14 @@ export default function Teacher_edit_results() {
     <Toaster position='top-right'/>
      {/* top with title field and classe indication */}
         { state && 
-            <div className=" flex-1 flex items-center justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+            <div className="header_page">
                 <input defaultValue={state_title} onChange={(e)=>setExam_title(e.target.value)} placeholder="Titre de l'examen" type='text' maxLength={150} className='input_alone_text'/>
                 <h2>Classe : <span className='text-xl text-primary-blue font-bold'>{state_classe}</span></h2>
             </div>
         }
 
 
-        <div className="w-335 p-6 bg-[#f9f6f2] min-h-screen flex flex-col items-center space-y-6">
+        <div className="w-full p-6 bg-[#f9f6f2] min-h-screen flex flex-col items-center space-y-6">
             {/* result on */}
             <div className="self-start text-sm">
                 Notes sur : <input defaultValue={result_on} onChange={(e)=> setResult_on(Number(e.target.value))}type='number' min={1} className='input_alone_other !w-20 !h-10 '/>
@@ -152,7 +152,7 @@ export default function Teacher_edit_results() {
                     mutation.mutate({title:exam_title, result_on: result_on, all_results:all_results})
                 }
             }}
-            className="hover:cursor-pointer ml-140 bg-orange-400 hover:bg-orange-500 text-white font-medium px-6 py-2 rounded-(--my-radius)    shadow">
+            className="hover:cursor-pointer md:ml-140 bg-orange-400 hover:bg-orange-500 text-white font-medium px-6 py-2 rounded-(--my-radius)    shadow">
                 Modifier
             </button>
         </div>

@@ -30,10 +30,10 @@ export default function Teacher_homeworks(){
 
         { !isLoading && !isPending && 
 
-            <div className="flex-1 w-full p-6 ">
+            <div className="">
 
                 {/* get all classes from db */}
-                <div className="flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+                <div className="header_page">
 
                     <select className="rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-l w-60 h-12" onChange={(e)=>{
                         setSelected_classe_name(e.target.options[e.target.selectedIndex].text) 
@@ -44,7 +44,7 @@ export default function Teacher_homeworks(){
                     ))}
                     
                     </select>
-                    <NavLink to='/teacher/devoirs/ajouter' className="mb-6 bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded">
+                    <NavLink to='/teacher/devoirs/ajouter' className="bg-green-400 hover:bg-green-500 text-white font-semibold px-6 py-3 rounded">
                     Ajouter un devoir &gt;
                     </NavLink>
                 </div>
@@ -52,7 +52,7 @@ export default function Teacher_homeworks(){
                 
 
                 {/* all homeworks created fetched from db */}
-                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-335">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full p-2">
                     {/* Filter system using class names*/}
                     {Object.keys(all_homeworks_created).filter(
                         (key:any) => selected_classe_name === all_string || all_homeworks_created[key].classe_name === selected_classe_name).reverse().map(

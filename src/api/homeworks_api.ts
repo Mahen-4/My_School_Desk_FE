@@ -100,10 +100,37 @@ export const get_last_homeworks = async()=>{
   return res.data
 }
 
+const should_fetch_user_type = sessionStorage.getItem("user_type");
+
 //execute request and store in cache
 export const use_get_last_homeworks = ()=>{
   return useQuery({
-    queryKey: ['last_homewors'],
+    queryKey: ['last_homeworks'],
     queryFn: get_last_homeworks,
+    enabled: should_fetch_user_type === "student",
+    staleTime: 1000 * 60 * 20, // cache data expire in 20 minutes
+
+  });
+}
+
+
+
+
+export const get_last_homeworks_created_teacher = async()=>{
+    const res = await axios.get("http://localhost:8000/homeworks/get_last_homeworks_created_teacher", {
+    withCredentials: true,  
+  });
+
+  return res.data
+}
+
+
+//execute request and store in cache
+export const use_get_last_homeworks_created_teacher = ()=>{
+  return useQuery({
+    queryKey: ['last_homeworks_created_teacher'],
+    queryFn: get_last_homeworks_created_teacher,
+    enabled: should_fetch_user_type === "teacher",
+    staleTime: 1000 * 60 * 2, // cache data expire in 2minutes
   });
 }

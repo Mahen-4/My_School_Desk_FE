@@ -84,18 +84,24 @@ export const get_current_user = async () => {
   return res.data;
 };
 
+const should_fetch_user = sessionStorage.getItem("is_logIn");
 
 export const use_current_user = ()=>{
   return useQuery({
     queryKey: ['user'],
     queryFn: get_current_user,
-    staleTime: 1000 * 60 * 15 // cache data expire in 15minutes
+    staleTime: 1000 * 60 * 15, // cache data expire in 15minutes
+    enabled: !!should_fetch_user
   });
 }
 
 
 export const logout = async() => {
     
+    //session data delete
+    sessionStorage.removeItem("is_logIn"); 
+    sessionStorage.removeItem("user_type"); 
+
     const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
     const res = await axios.post('http://localhost:8000/auth/logout/',{}, {
