@@ -28,10 +28,10 @@ export default function Students_homeworks(){
         <>
         { !isLoading && !isPending && 
 
-            <div className="flex-1 w-full p-6 ">
+            <div>
 
                 {/* get all subjects from db */}
-                <div className="flex items-center justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+                <div className="header_page">
                     <span>Devoirs à faire : <span className="text-lg text-primary-blue font-bold">{Object.keys(all_homeworks).length}</span></span>
                     <select className="rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-l w-60 h-12" onChange={(e)=>{
                         setSelected_subject(e.target.options[e.target.selectedIndex].text) 
@@ -45,7 +45,7 @@ export default function Students_homeworks(){
                 </div>
 
                 {/* all homeworks  fetched from db */}
-                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-335">
+                <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full p-2">
                     {/* Filter system using class names*/}
                     {Object.keys(all_homeworks).filter(
                         (key:any) => selected_subject === all_string || all_homeworks[key].homework_subject === selected_subject).reverse().map(

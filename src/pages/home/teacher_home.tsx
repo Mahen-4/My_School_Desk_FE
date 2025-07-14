@@ -7,7 +7,7 @@ export default function Teacher_home(){
 
     return(
         <div className="flex-1 flex-col"> {/* TOP SECTION */}
-            <div className=" flex items-center justify-left w-full h-50 border-b-4 border-primary-blue">
+            <div className=" flex items-center justify-left md:w-335 h-50 border-b-4 border-primary-blue">
                 <div className="flex items-center space-x-4 ml-30">
                     {isLoading ? (
                         <p>Chargement....</p>

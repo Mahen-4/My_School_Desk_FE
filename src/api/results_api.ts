@@ -77,3 +77,21 @@ export const use_get_student_results = ()=>{
     queryFn: get_student_results,
   });
 }
+
+
+export const get_last_results = async()=>{
+    const res = await axios.get("http://localhost:8000/results/get_last_results",{
+        withCredentials: true,
+    })
+    return res.data
+}
+
+//execute request 
+export const use_get_last_results = ()=>{
+  return useQuery({
+    queryKey: ['student_last_results'],
+    queryFn: get_last_results,
+  });
+}
+
+

@@ -1,10 +1,13 @@
 // src/components/Layout.tsx
 import { useMutation } from '@tanstack/react-query';
-import { FaHome, FaBook, FaClipboardList, FaQuestionCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaBook, FaClipboardList, FaQuestionCircle, FaSignOutAlt, FaBars } from 'react-icons/fa';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { logout } from './api/auth_api';
+import { logout, use_current_user } from './api/auth_api';
 import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import { use_get_last_homeworks } from './api/homeworks_api';
+import { use_get_last_results } from './api/results_api';
+import { useState } from 'react';
 
 export default function App_layout() {
 
@@ -13,6 +16,11 @@ export default function App_layout() {
   let location = useLocation().pathname.split('/')[2] // get current location
 
   const navigate = useNavigate()
+
+  const {data: last_homeworks, isLoading} = use_get_last_homeworks()
+  const {data: last_results, isPending} = use_get_last_results()
+  const { data: user, isFetching } = use_current_user();
+  
 
   const mutation = useMutation({
     mutationFn: logout,
@@ -36,37 +44,66 @@ export default function App_layout() {
 
   })
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleSidebar = () => setIsOpen(!isOpen);
+
+
   return (
     <div className="flex min-h-screen">
       <Toaster position='top-right' />
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-md flex flex-col justify-between px-4 py-6 fixed h-screen">
+      {/* Bouton burger visible seulement sur mobile */}
+      <button
+        onClick={toggleSidebar}
+        className="sm:block md:hidden p-4 text-primary-blue text-2xl fixed top-0 left-0 z-50"
+      >
+        <FaBars />
+      </button>
+
+      {/* Overlay sur fond sombre en mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-30 z-40 sm:block md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div className={`w-64 bg-white shadow-md flex flex-col justify-between px-4 py-6 fixed h-screen z-50 
+        transition-transform duration-300 
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'} 
+        sm:translate-x-0 sm:relative sm:block`}>
+
         <div>
+          {/* Header Logo */}
           <div className="flex items-center gap-2 mb-8">
-            <img src="/images_icons/logo-no-text.png" alt="Logo" className="w-15 h-15" />
+            <img src="/images_icons/logo-no-text.png" alt="Logo" className="w-12 h-12" />
             <h1 className="text-xl font-bold text-primary-blue">MySchoolDesk</h1>
           </div>
 
+          {/* Navigation */}
           <nav className="flex flex-col gap-4">
-            <NavLink to={`/${user_type}/accueil`} className={location == 'accueil' ? "menu_active" : "menu_not_active"}>
-              <FaHome className={location == 'accueil' ?  "text-xl" : "text-xl text-primary-blue" } />
+            <NavLink to={`/${user_type}/accueil`} className={location === 'accueil' ? "menu_active" : "menu_not_active"}>
+              <FaHome className={location === 'accueil' ? "text-xl" : "text-xl text-primary-blue"} />
               Accueil
             </NavLink>
-            <NavLink to={`/${user_type}/notes`} className={location == 'notes' ? "menu_active" : "menu_not_active"}>
-              <FaBook className={location == 'notes' ?  "text-xl" : "text-xl text-primary-blue" } />
+            <NavLink to={`/${user_type}/notes`} className={location === 'notes' ? "menu_active" : "menu_not_active"}>
+              <FaBook className={location === 'notes' ? "text-xl" : "text-xl text-primary-blue"} />
               Notes
             </NavLink>
-            <NavLink to={`/${user_type}/devoirs`} className={location == 'devoirs' ? "menu_active" : "menu_not_active"}>
-              <FaClipboardList className={location == 'devoirs' ?  "text-xl" : "text-xl text-primary-blue" } />
+            <NavLink to={`/${user_type}/devoirs`} className={location === 'devoirs' ? "menu_active" : "menu_not_active"}>
+              <FaClipboardList className={location === 'devoirs' ? "text-xl" : "text-xl text-primary-blue"} />
               Devoirs
             </NavLink>
-            <NavLink to={`/${user_type}/quiz`} className={location == 'quiz' ? "menu_active" : "menu_not_active"}>
-              <FaQuestionCircle className={location == 'quiz' ?  "text-xl" : "text-xl text-primary-blue" } />
+            <NavLink to={`/${user_type}/quiz`} className={location === 'quiz' ? "menu_active" : "menu_not_active"}>
+              <FaQuestionCircle className={location === 'quiz' ? "text-xl" : "text-xl text-primary-blue"} />
               Quiz
             </NavLink>
           </nav>
 
-          <div className="bg-primary-blue text-white rounded-xl p-4 mt-50">
+          {/* Support box */}
+          <div className="bg-primary-blue text-white rounded-xl p-4 mt-8">
             <h3 className="font-bold text-sm">Support Administration</h3>
             <p className="text-xs mt-1">Lun - Ven de 9h à 17h</p>
             <button className="mt-3 text-primary-blue bg-white px-2 py-1 text-xs rounded-md">Contact</button>
@@ -74,20 +111,67 @@ export default function App_layout() {
           </div>
         </div>
 
-        <p onClick={()=> mutation.mutate()} className="hover:cursor-pointer flex items-center gap-3 p-2 mt-6 text-gray-700 font-medium hover:bg-red-100 rounded-md">
+        {/* Déconnexion */}
+        <p onClick={() => mutation.mutate()} className="hover:cursor-pointer flex items-center gap-3 p-2 mt-6 text-gray-700 font-medium hover:bg-red-100 rounded-md">
           <FaSignOutAlt className="text-xl text-red-500" />
           Déconnexion
         </p>
       </div>
 
       {/* Main content */}
-      <main className="flex-1 p-4 ml-64">
-        <Outlet /> {/* Affiche les routes enfants ici */}
+      <main className="md:ml-5">
+        <Outlet /> 
       </main>
 
-       <div className="w-64 fixed right-0 top-0 h-screen bg-white shadow-md flex flex-col justify-between px-4 py-6 z-10">
-        Droite
-      </div>
-    </div>
+      {/** right panel */}
+      <div className="hidden md:flex md:flex-col md:fixed w-70  right-0 top-0 h-screen bg-white p-4 rounded-lg shadow text-s font-sans">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="bg-primary-blue text-white font-bold text-lg rounded-md w-10 h-10 flex items-center justify-center">
+            {user.last_name[0]}
+          </div>
+          <span className="text-gray-700 font-medium">{user.last_name.toUpperCase()} {user.first_name}</span>
+        </div>
+
+        <div className="mb-6">
+              <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
+                <span>Devoir à faire</span>
+                <NavLink to={`/${user_type}/devoirs`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+              </div>
+              <div className="space-y-4">
+                {!isLoading && last_homeworks.map((homework:any, index:number) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <div className="bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1  rounded-(--my-radius)">
+                      {homework.due_date}
+                    </div>
+                    <div>
+                      <div className="text-gray-800">{homework.description}</div>
+                      <div className="text-gray-400 text-xs">{homework.subject}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
+                <span>Dernières notes ajoutées</span>
+                <NavLink to={`/${user_type}/notes`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+              </div>
+              <div className="space-y-4">
+                {!isPending && last_results.map((result:any, index:number) => (
+                  <div key={index} className="flex gap-3 ">
+                    <div className={` bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1 rounded-(--my-radius)`}>
+                      {result.score}/{result.result_on}
+                    </div>
+                    <div>
+                      <div className="text-gray-800">{result.result_title}</div>
+                      <div className="text-gray-400 text-xs">{result.subject}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
   );
 }

@@ -50,12 +50,12 @@ export default function Student_quiz_info(){
         <>
             {quiz_info && state && 
                 <div>
-                    <div className="mt-5 text-xl text-primary-blue flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+                    <div className="header_page text-primary-blue">
                         <h1>Titre : <span className="font-bold">{quiz_info[state_quiz_id].quiz_title}</span></h1>
                         <h1>Matière : <span className="font-bold">{quiz_info[state_quiz_id].quiz_teacher_subject}</span></h1>
                     </div>
                     <div className=" p-4">
-                        <div className="w-335 mx-auto flex justify-center mt-4">
+                        <div className="w-full mx-auto flex justify-center mt-4">
                             {/* Card principale */}
                             <div className="bg-white rounded-lg shadow-lg overflow-hidden p-2">
                             
@@ -64,7 +64,7 @@ export default function Student_quiz_info(){
                                  <img 
                                 src={`/images_icons/quiz_${quiz_info[state_quiz_id].quiz_teacher_subject}.webp`} 
                                 alt="Drapeau du Royaume-Uni" 
-                                className="w-100 h-48 object-cover rounded-t-lg"
+                                className="w-60 md:w-100 h-48 object-cover rounded-t-lg"
                                 />
                                 {/* Informations du quiz */}
                                 <div className="space-y-2 mb-6">

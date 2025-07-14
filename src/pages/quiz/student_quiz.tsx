@@ -22,7 +22,7 @@ export default function Student_quiz(){
         <>
 
              {/* search input */}
-            <div className="mt-5 flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4">
+            <div className="header_page">
                 <input onChange={(e)=> setSearch(e.target.value)} placeholder="Recherche par titre" type='text' maxLength={150} className='input_alone_text'/>
                 <select className="rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-l w-60 h-12" onChange={(e)=>{
                     setSelected_subject(e.target.options[e.target.selectedIndex].text) 
@@ -34,7 +34,7 @@ export default function Student_quiz(){
                         
                 </select>
             </div>
-            <div className="w-335 flex justify-center gap-8 py-10 bg-[#fcf8f2]">
+            <div className="w-full flex flex-wrap justify-center gap-8 py-10 bg-[#fcf8f2]">
                 {/* all quiz  loop over all of classe - search filter  apply*/}
                 {!isLoading && !isPending && 
                     Object.keys(classe_quiz).filter((quiz_id: any)=> (

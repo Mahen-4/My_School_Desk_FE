@@ -22,7 +22,7 @@ body{
 }
 
 .input_alone_text{
-  @apply rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-sm w-100 h-12
+  @apply rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-sm md:w-100 h-12 w-70
 }
 .input_alone_other{
   @apply rounded-(--my-radius) bg-white px-4 py-2 text-gray-600 text-sm w-60 h-12
@@ -34,8 +34,10 @@ body{
   @apply flex items-center gap-3 p-2 rounded-md hover:bg-primary-blue-hover text-primary-beige bg-primary-blue font-medium
 }
 
+.header_page{
+  @apply flex justify-between items-center mb-6 w-screen mt-10 md:mt-0 md:w-335  border-b-4 border-primary-blue p-4
+}
+
 @media only screen and (max-width: 768px) {
-  body {
-     padding: 10px;
-  }
+  
 }

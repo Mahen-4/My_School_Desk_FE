@@ -48,7 +48,7 @@ export default function Student_results(){
         <>
         {/* filter subjects input */}
         {!isLoading && 
-            <div className="flex justify-between items-center mb-6 w-335 border-b-4 border-primary-blue pb-4">
+            <div className="header_page">
                 <span>Moyenne générale :  &nbsp;
                     <span className="font-bold text-lg text-primary-blue">
                         {overall_average}/20
@@ -73,7 +73,7 @@ export default function Student_results(){
             selected_subject === all_string || subject === selected_subject
         )).map((one_subject:any)=>(
             
-            <div key={one_subject} className="w-335 p-6 bg-[#f9f6f2] flex flex-col items-center ">
+            <div key={one_subject} className="w-full p-6 bg-[#f9f6f2] flex flex-col items-center ">
                     {/* title - subject */}
                     <div className="flex justify-between w-full max-w-3xl bg-gradient-to-r from-primary-blue to-primary-beige text-white text-xl px-4 py-2 rounded-t-(--my-radius)">
                         <div>

@@ -128,16 +128,16 @@ export default function Student_quiz_play(){
         <>
         {all_data && state && 
             <div>
-                <div className="mt-5 text-primary-blue text-xl flex justify-between mb-6 w-full border-b-4 border-primary-blue pb-4 ">
+                <div className="header_page text-primary-blue">
                         <h1>Titre : <span className="font-bold">{state_quiz_title}</span></h1>
                         <h1>Score : <span className="font-bold">{user_score}/{Object.keys(all_data).length}</span></h1>
                         <h1>Question : <span className="font-bold"> {String(question_number+1)}/{Object.keys(all_data).length}</span></h1>
                 </div>
-                <div className="w-335 text-center mt-50">
+                <div className="w-full text-center mt-50">
                     <h1 className="text-xl text-primary-blue">Question {String(question_number+1)} : <span className="font-semibold ">{all_questions[0]}</span></h1>
                 </div>
                 {/* Responses */}
-                <div className="grid grid-cols-2 gap-10 mt-10 ">
+                <div className="grid grid-cols-2 gap-10 mt-10 p-2">
                     {
                         //on click add to response list and if already in remove it 
                         Object.values(all_data[all_questions[question_number]]).map((values:any)=>(
@@ -156,7 +156,7 @@ export default function Student_quiz_play(){
                         ))
                     }
                </div>
-               <div className="flex" >
+               <div className="flex p-2" >
                 
                 {show_responses ? (
                     <button

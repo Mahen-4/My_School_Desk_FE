@@ -91,3 +91,19 @@ export const delete_homework_db = async(homework_id: Number) => {
   })
   return res.data
 }
+
+export const get_last_homeworks = async()=>{
+    const res = await axios.get("http://localhost:8000/homeworks/get_last_homeworks", {
+    withCredentials: true,  
+  });
+
+  return res.data
+}
+
+//execute request and store in cache
+export const use_get_last_homeworks = ()=>{
+  return useQuery({
+    queryKey: ['last_homewors'],
+    queryFn: get_last_homeworks,
+  });
+}
