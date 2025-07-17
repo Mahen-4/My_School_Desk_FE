@@ -24,7 +24,6 @@ export default function App_layout() {
 
   const should_fetch_user_type = sessionStorage.getItem("user_type");
 
-
   const mutation = useMutation({
     mutationFn: logout,
     onSuccess: ()=> navigate('/'),
@@ -53,7 +52,7 @@ export default function App_layout() {
 
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex  min-h-screen">
       <Toaster position='top-right' />
       {/* Sidebar */}
       {/* Bouton burger  mobile */}
@@ -122,12 +121,12 @@ export default function App_layout() {
       </div>
 
       {/* Main content */}
-      <main className="md:ml-5">
+      <main className="flex-1 md:ml-5 md:mr-5">
         <Outlet /> 
       </main>
 
       {/** right panel */}
-      <div className="hidden md:flex md:flex-col md:fixed w-70  right-0 top-0 h-screen bg-white p-4 rounded-lg shadow text-s font-sans">
+      <div className="hidden md:flex md:flex-col md:sticky w-70  top-0 h-screen bg-white p-4 rounded-lg shadow text-s font-sans ml-auto">
         <div className="flex items-center gap-3 mb-6">
           <div className="bg-primary-blue text-white font-bold text-lg rounded-md w-10 h-10 flex items-center justify-center">
             {user.last_name[0]}
@@ -136,14 +135,15 @@ export default function App_layout() {
         </div>
 
         {should_fetch_user_type == "student" ?
-            <div className="mb-6">
+            <div className="mb-6 flex flex-col gap-10">
         
-              <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
-                <span>Devoir à faire</span>
-                <NavLink to={`/${user_type}/devoirs`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
-              </div>
+              
 
               <div className="space-y-4">
+                <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
+                  <span>Devoir à faire</span>
+                  <NavLink to={`/${user_type}/devoirs`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+                </div>
                 {!isLoading  && last_homeworks.map((homework:any, index:number) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1  rounded-(--my-radius)">
@@ -157,14 +157,17 @@ export default function App_layout() {
                 ))}
               </div>
 
-              <div>
-                <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
-                  <span>Dernières notes ajoutées</span>
-                  <NavLink to={`/${user_type}/notes`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
-                </div>
-              </div>
+              
 
               <div className="space-y-4">
+
+                <div>
+                  <div className="flex justify-between items-center text-primary-blue font-semibold mb-2">
+                    <span>Dernières notes ajoutées</span>
+                    <NavLink to={`/${user_type}/notes`} className="text-xs text-blue-500 hover:underline">Voir plus</NavLink>
+                  </div>
+                </div>
+
                 {!isPending && last_results.map((result:any, index:number) => (
                   <div key={index} className="flex gap-3 ">
                     <div className={` bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1 rounded-(--my-radius)`}>
@@ -186,7 +189,7 @@ export default function App_layout() {
               </div>
 
               <div className="space-y-4">
-                {!isFetching && last_homeworks_created.map((homework:any, index:number) => (
+                {!isFetching && should_fetch_user_type == 'teacher' && last_homeworks_created.map((homework:any, index:number) => (
                   <div key={index} className="flex items-start gap-3">
                     <div className="bg-primary-blue h-10 flex items-center text-white text-xs font-semibold px-2 py-1  rounded-(--my-radius)">
                       {homework.homework_due_date}

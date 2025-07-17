@@ -134,7 +134,7 @@ export default function Student_quiz_play(){
                         <h1>Question : <span className="font-bold"> {String(question_number+1)}/{Object.keys(all_data).length}</span></h1>
                 </div>
                 <div className="w-full text-center mt-50">
-                    <h1 className="text-xl text-primary-blue">Question {String(question_number+1)} : <span className="font-semibold ">{all_questions[0]}</span></h1>
+                    <h1 className="text-xl text-primary-blue">Question {String(question_number+1)} : <span className="font-semibold ">{all_questions[question_number]}</span></h1>
                 </div>
                 {/* Responses */}
                 <div className="grid grid-cols-2 gap-10 mt-10 p-2">

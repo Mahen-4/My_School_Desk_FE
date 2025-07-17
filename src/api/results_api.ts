@@ -86,14 +86,13 @@ export const get_last_results = async()=>{
     return res.data
 }
 
-const should_fetch_user_type = sessionStorage.getItem("user_type");
 
 //execute request 
 export const use_get_last_results = ()=>{
   return useQuery({
     queryKey: ['student_last_results'],
     queryFn: get_last_results,
-    enabled: should_fetch_user_type === "student",
+    enabled: sessionStorage.getItem("user_type") === "student",
     staleTime: 1000 * 60 * 20, // cache data expire in 20 minutes
 
   });

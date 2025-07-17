@@ -10,10 +10,20 @@ interface LoginCredentials {
 
 //get csrf token
 export const getCSRFToken = async () => {
-  await axios.get("http://localhost:8000/auth/csrf/", {
+  const res = await axios.get("http://localhost:8000/auth/csrf/", {
     withCredentials: true,  
   });
+  return res.data
 };
+
+export const use_getCSRFToken = ()=>{
+  return useQuery({
+    queryKey: ['csrftoken'],
+    queryFn: getCSRFToken,
+    staleTime: Infinity
+  });
+}
+
 
 //send credentials for login 
 export const login = async(credentials: LoginCredentials) => {
@@ -84,14 +94,13 @@ export const get_current_user = async () => {
   return res.data;
 };
 
-const should_fetch_user = sessionStorage.getItem("is_logIn");
 
 export const use_current_user = ()=>{
   return useQuery({
     queryKey: ['user'],
     queryFn: get_current_user,
     staleTime: 1000 * 60 * 15, // cache data expire in 15minutes
-    enabled: !!should_fetch_user
+    enabled: sessionStorage.getItem("is_logIn") === 'true'
   });
 }
 

@@ -4,7 +4,7 @@ import type { Classe_interface } from '../../api/classes_api';
 import { edit_homework_db } from '../../api/homeworks_api';
 import { useMutation } from '@tanstack/react-query';
 import toast, { Toaster } from 'react-hot-toast';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 export default function Teacher_edit_homeworks(){
@@ -17,10 +17,16 @@ export default function Teacher_edit_homeworks(){
         return <p>Pas de données fournies</p>;
     }
 
+    const change_date_format = (dateStr: string) => {
+            if (!dateStr) return '';
+            const [day, month, year] = dateStr.split('-');
+            return `${year}-${month}-${day}`;
+    };
+
     const { state_homework_id, state_classe_name,  state_description, state_due_date } = state; // get state data
 
     const [selected_classe_name, setSelected_classe_name]  = useState(state_classe_name)
-    const [due_date, setDue_date]: any = useState(state_due_date);
+    const [due_date, setDue_date]: any = useState(change_date_format(state_due_date));
     const [description, setDescription] = useState(state_description);
 
 
@@ -28,7 +34,9 @@ export default function Teacher_edit_homeworks(){
             data: Classe_interface[],
             isLoading: boolean
         }
-   
+    
+    const navigate = useNavigate()
+
     const mutation = useMutation({
         mutationFn: edit_homework_db, //make request
         onSuccess: () => {
@@ -36,6 +44,7 @@ export default function Teacher_edit_homeworks(){
             padding: '16px',
             fontSize: '20px'
             },})
+            navigate('/teacher/devoirs')
         },
         onError: (err: any) => {
         // if response
@@ -76,6 +85,8 @@ export default function Teacher_edit_homeworks(){
             mutation.mutate({homework_id: state_homework_id, description: description, due_date: new Date(due_date).toISOString().split('T')[0], classe: selected_classe_name })
         }
     }
+
+    
     
     return(
         <>

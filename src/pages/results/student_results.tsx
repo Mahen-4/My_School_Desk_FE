@@ -33,7 +33,7 @@ export default function Student_results(){
             //loop over all score in a each subject and get average 
             Object.keys(scores_by_subject).forEach((subject:any)=>{
                 let sum_array = Object.values(scores_by_subject[subject]).reduce((acc: number, val: any) => acc + val, 0)
-                update = {...average_by_subject, [subject]: sum_array / Object.values(scores_by_subject[subject]).length}
+                update = {...update, [subject]: sum_array / Object.values(scores_by_subject[subject]).length}
                 setAverage_by_subject(update)
             })
 

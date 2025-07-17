@@ -7,7 +7,7 @@ import Student_home from './pages/home/student_home';
 import App_layout from './App_layout';
 import Teacher_home from './pages/home/teacher_home';
 import Password_change from './pages/auth/password_change';
-import { use_current_user } from './api/auth_api';
+import { use_current_user, use_getCSRFToken } from './api/auth_api';
 import Teacher_homeworks from './pages/homeworks/teacher_homeworks';
 import Teacher_add_homeworks from './pages/homeworks/teacher_add_homeworks';
 import Teacher_edit_homeworks from './pages/homeworks/teacher_edit_homeworks';
@@ -22,29 +22,33 @@ import Teacher_edit_quiz from './pages/quiz/teacher_edit_quiz';
 import Student_quiz from './pages/quiz/student_quiz';
 import Student_quiz_info from './pages/quiz/student_quiz_info';
 import Student_quiz_play from './pages/quiz/student_quiz_play';
-
-// type User_interface = {
-//   first_name: string,
-//   last_name: string,
-//   email: string,
-//   is_student?: Boolean | any,
-//   is_teacher?:  Boolean | any, 
-//   is_staff?:  Boolean | any,
-// };
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 function App() {
   
   //get data of current user 
   const { data: user, isLoading, isError } = use_current_user();
 
+  useEffect(()=>{
   // redirect to specific page if connected
-  if( !isLoading){
-    user?.is_student && <Navigate to='/student/accueil' replace />
-    user?.is_teacher && <Navigate to='/teacher/accueil' replace /> 
-  }
+    if(!isLoading){
+      !user && <Navigate to='/' replace />
+      user?.is_student && <Navigate to='/student/accueil' replace />
+      user?.is_teacher && <Navigate to='/teacher/accueil' replace /> 
+    }
+  },[user, isLoading])
+  
 
+
+  const {data: csrfToken, isPending} = use_getCSRFToken()
+
+  
   return (
+    
     <div className=''>
+      {!isPending && 
+      (
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Login />} />
@@ -52,7 +56,7 @@ function App() {
           <Route path='/auth/reinitialiser_mdp' element={<Password_forget />}/> 
           <Route path='/auth/change_mdp/:token' element={<Password_change />} />
 
-          {!isLoading && 
+          {!isLoading &&
           (
             <Route element={<App_layout />}>
               <Route element={<Protected_route condition={user?.is_student} redirectTo="/" />}>
@@ -83,6 +87,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+      )}
     </div>
   )
 }

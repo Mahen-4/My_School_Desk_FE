@@ -15,7 +15,7 @@ export default function Password_forget() {
   const mutation = useMutation({
     mutationFn: reset_password, // execute request
     onSuccess: () => {
-       sessionStorage.setItem("pending_reset_mdp", "true"); // set session variable for change page protect
+       localStorage.setItem("pending_reset_mdp", "true"); // set localStorage variable for change page protect
        toast.success('Email envoyé', {style: {
           padding: '16px',
           fontSize: '20px'

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useRef, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { edit_results_db } from '../../api/results_api';
 
 
@@ -34,6 +34,8 @@ export default function Teacher_edit_results() {
         })
     },[])
 
+    const navigate = useNavigate()
+
     const mutation = useMutation({
         mutationFn: edit_results_db, //edit results request
         onSuccess: () => {
@@ -41,6 +43,7 @@ export default function Teacher_edit_results() {
             padding: '16px',
             fontSize: '20px'
             },})
+            navigate('/teacher/notes')
         },
         onError: (err: any) => {
         // if response

@@ -1,8 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import Left_quote_image from "../../components/auth_components/left_quote_image";
-import {useEffect, useRef, type RefObject}  from 'react';
+import {useEffect, useRef}  from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { getCSRFToken, change_password} from "../../api/auth_api";
+import {change_password} from "../../api/auth_api";
 import toast, { Toaster } from 'react-hot-toast';
 import { useParams } from 'react-router';
 
@@ -16,7 +16,7 @@ export default function Password_change() {
 
   useEffect(() => {
       // check if credentials were good and can continue the process
-      if (!sessionStorage.getItem("pending_reset_mdp")) {
+      if (!localStorage.getItem("pending_reset_mdp")) {
         navigate("/"); //return to login
       }
     }, []);
@@ -28,7 +28,7 @@ export default function Password_change() {
           padding: '16px',
           fontSize: '20px'
         },})
-      sessionStorage.removeItem("pending_reset_mdp") //delete session item
+      localStorage.removeItem("pending_reset_mdp") //delete localstorage item
       navigate('/')
     },
     onError: (err: any) => {

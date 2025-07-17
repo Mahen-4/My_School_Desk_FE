@@ -109,6 +109,7 @@ export default function Teacher_edit_quiz(){
                 padding: '16px',
                 fontSize: '20px'
                 },})
+            navigate('/teacher/quiz')
         },
         onError: (err: any) => {
             // if response

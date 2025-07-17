@@ -27,9 +27,8 @@ export default function Digi_code_verif() {
         queryClient.setQueryData(["user"], data); // data to cache
         sessionStorage.setItem("is_logIn", "true"); //session data
         sessionStorage.setItem("user_type", data.is_teacher == true ? "teacher" : "student"); //session data
-        sessionStorage.removeItem("pending2FA") //delete session item
+        sessionStorage.removeItem("pending2FA") //delete session item   
         data.is_teacher == true ? navigate('/teacher/accueil') :  navigate('/student/accueil') // redirect 
-
     },
     onError: (err: any) => {
       // if response
