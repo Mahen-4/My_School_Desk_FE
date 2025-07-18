@@ -6,6 +6,9 @@ type Protected_route_interface = {
 };
 
 const Protected_route = ({ condition, redirectTo = "/" }: Protected_route_interface) => {
+
+  console.log(condition)
+  
   return condition ? <Outlet /> : <Navigate to={redirectTo} replace />;
 };
 export default Protected_route;

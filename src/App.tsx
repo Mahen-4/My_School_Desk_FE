@@ -30,15 +30,33 @@ function App() {
   //get data of current user 
   const { data: user, isLoading, isError } = use_current_user();
 
-  useEffect(()=>{
-  // redirect to specific page if connected
-    if(!isLoading){
-      !user && <Navigate to='/' replace />
-      user?.is_student && <Navigate to='/student/accueil' replace />
-      user?.is_teacher && <Navigate to='/teacher/accueil' replace /> 
-    }
-  },[user, isLoading])
   
+  
+  const HomePage = () => {
+    if (isLoading) {
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-lg">Chargement...</div>
+        </div>
+      );
+    }
+    
+    if (!user) {
+      return <Login />;
+    }
+    
+    if (user.is_student) {
+      return <Navigate to="/student/accueil" replace />;
+    }
+    
+    if (user.is_teacher) {
+      return <Navigate to="/teacher/accueil" replace />;
+    }
+    
+    // Fallback
+    return <Login />;
+  };
+ 
 
 
   const {data: csrfToken, isPending} = use_getCSRFToken()
@@ -51,14 +69,16 @@ function App() {
       (
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Login />} />
+
+          <Route path='/' element={<HomePage />} />
+
           <Route path='/auth/digital_code' element={<Digi_code_verif />}/> 
           <Route path='/auth/reinitialiser_mdp' element={<Password_forget />}/> 
           <Route path='/auth/change_mdp/:token' element={<Password_change />} />
 
           {!isLoading &&
           (
-            <Route element={<App_layout />}>
+            <Route element={!user ? <Navigate to="/" replace /> : <App_layout />}>
               <Route element={<Protected_route condition={user?.is_student} redirectTo="/" />}>
                 <Route path="student/accueil" element={<Student_home />} />
                 <Route path='student/devoirs' element={<Students_homeworks />} />
@@ -83,7 +103,10 @@ function App() {
               </Route>
             </Route>
           )}
-
+         
+          
+          {/* if url not existing redirect  */}
+          <Route path="*" element={<Navigate to="/" replace />} />
 
         </Routes>
       </BrowserRouter>

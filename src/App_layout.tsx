@@ -7,15 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { use_get_all_homeworks_created_teacher, use_get_last_homeworks, use_get_last_homeworks_created_teacher } from './api/homeworks_api';
 import { use_get_last_results } from './api/results_api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function App_layout() {
+  
+  const navigate = useNavigate()
 
 
   let user_type = useLocation().pathname.split('/')[1] //get student or teacher
   let location = useLocation().pathname.split('/')[2] // get current location
 
-  const navigate = useNavigate()
 
   const { data: user } = use_current_user();
   const {data: last_homeworks, isLoading} = use_get_last_homeworks()
