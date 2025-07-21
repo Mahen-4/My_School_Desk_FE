@@ -25,7 +25,7 @@ export default function Teacher_add_results() {
     const [all_results, setAll_results] = useState<{ [key: string]: number }>({});
 
     const mutation = useMutation({
-        mutationFn: get_classe_students, //get students full names of the classe
+        mutationFn: get_classe_students, //get classes all students with full names 
         onSuccess: (data) => {
            setAll_students(data)
         },

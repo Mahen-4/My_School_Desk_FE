@@ -1,7 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie";
 import { useQuery} from "@tanstack/react-query";
-
+import api from "./config";
 
 interface LoginCredentials {
     email: String,
@@ -10,7 +10,7 @@ interface LoginCredentials {
 
 //get csrf token
 export const getCSRFToken = async () => {
-  const res = await axios.get("http://localhost:8000/auth/csrf/", {
+  const res = await api.get("/auth/csrf/", {
     withCredentials: true,  
   });
   return res.data
@@ -30,7 +30,7 @@ export const login = async(credentials: LoginCredentials) => {
     
     const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-    const res = await axios.post('http://localhost:8000/auth/login/', credentials, {
+    const res = await api.post('/auth/login/', credentials, {
         headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token
         'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ export const digi_code_check = async(code : {digi_code: number }) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/auth/digi_code_check/', code, {
+  const res = await api.post('/auth/digi_code_check/', code, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const reset_password = async(email : {email: string }) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/auth/reset_password/', email, {
+  const res = await api.post('/auth/reset_password/', email, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export const change_password = async(data : {token: string, password: string }) 
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/auth/change_password/', data, {
+  const res = await api.post('/auth/change_password/', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export const change_password = async(data : {token: string, password: string }) 
 
 //get userdata
 export const get_current_user = async () => {
-  const res = await axios.get("http://localhost:8000/auth/user_data/", {
+  const res = await api.get("/auth/user_data/", {
     withCredentials: true,
   });
   return res.data;
@@ -113,7 +113,7 @@ export const logout = async() => {
 
     const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-    const res = await axios.post('http://localhost:8000/auth/logout/',{}, {
+    const res = await api.post('/auth/logout/',{}, {
         headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token
         'Content-Type': 'application/json',

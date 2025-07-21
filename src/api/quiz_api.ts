@@ -1,13 +1,14 @@
 import axios from "axios"
 import Cookies from "js-cookie";
 import { useQuery} from "@tanstack/react-query";
+import api from "./config";
 
 
 export const add_quiz_db = async(data : {title: string, description: string, classes: String[], questions_responses: {[key: string]: [{}]}  }) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/quiz/add', data, {
+  const res = await api.post('/quiz/add', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -18,7 +19,7 @@ export const add_quiz_db = async(data : {title: string, description: string, cla
 }
 
 export const get_quiz_created = async()=>{
-    const res = await axios.get("http://localhost:8000/quiz/get_teacher_created_quiz", {
+    const res = await api.get("/quiz/get_teacher_created_quiz", {
     withCredentials: true,  
   });
 
@@ -37,7 +38,7 @@ export const get_quiz_questions_responses = async(id:number) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/quiz/get_quiz_questions_responses', id, {
+  const res = await api.post('/quiz/get_quiz_questions_responses', id, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -51,7 +52,7 @@ export const edit_quiz_db = async(data : {quiz_id:number, title: string, descrip
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.put('http://localhost:8000/quiz/edit', data, {
+  const res = await api.put('/quiz/edit', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -65,7 +66,7 @@ export const delete_question_db = async(question_id: Number) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.delete(`http://localhost:8000/quiz/delete_question/${question_id}`, {
+  const res = await api.delete(`/quiz/delete_question/${question_id}`, {
         headers: {
             "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
             'Content-Type': 'application/json',
@@ -79,7 +80,7 @@ export const delete_quiz_db = async(quiz_id: Number) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.delete(`http://localhost:8000/quiz/delete_quiz/${quiz_id}`, {
+  const res = await api.delete(`/quiz/delete_quiz/${quiz_id}`, {
         headers: {
             "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
             'Content-Type': 'application/json',
@@ -91,7 +92,7 @@ export const delete_quiz_db = async(quiz_id: Number) => {
 
 
 export const get_classe_quiz = async()=>{
-    const res = await axios.get("http://localhost:8000/quiz/get_classe_quiz", {
+    const res = await api.get("/quiz/get_classe_quiz", {
     withCredentials: true,  
   });
 
@@ -103,6 +104,7 @@ export const use_get_classe_quiz = ()=>{
   return useQuery({
     queryKey: ['classe_quiz'],
     queryFn: get_classe_quiz,
+    staleTime:  1000 * 60 * 15 // cache data expire in 15minutes
   });
 }
 
@@ -110,7 +112,7 @@ export const get_quiz_info = async(id:number) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/quiz/get_quiz_info', id, {
+  const res = await api.post('/quiz/get_quiz_info', id, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -123,7 +125,7 @@ export const get_quiz_info = async(id:number) => {
 export const add_attempt = async(data: {quiz_id: number, score:string}) => {
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/quiz/add_attempt', data, {
+  const res = await api.post('/quiz/add_attempt', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',

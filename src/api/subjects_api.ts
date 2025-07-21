@@ -1,6 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie";
 import { useQuery} from "@tanstack/react-query";
+import api from "./config";
 
 export interface Subject_interface {
   id: number;
@@ -8,7 +9,7 @@ export interface Subject_interface {
 }
 
 export const get_all_subjects = async()=>{
-    const res = await axios.get("http://localhost:8000/subjects/all", {
+    const res = await api.get("/school/subjects/all", {
     withCredentials: true,  
   });
 

@@ -1,13 +1,14 @@
 import axios from "axios"
 import Cookies from "js-cookie";
 import { useQuery} from "@tanstack/react-query";
+import api from "./config";
 
 
 export const add_results_db = async(data: {title: String, classe_name: string, result_on: number, all_results:{ [key: string]: number} }) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.post('http://localhost:8000/results/add', data, {
+  const res = await api.post('/results/add', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -22,7 +23,7 @@ export const edit_results_db = async(data: {title: String, result_on: number, al
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.put('http://localhost:8000/results/edit', data, {
+  const res = await api.put('/results/edit', data, {
     headers: {
         "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
         'Content-Type': 'application/json',
@@ -33,7 +34,7 @@ export const edit_results_db = async(data: {title: String, result_on: number, al
 }
 
 export const get_created_exam = async()=>{
-    const res = await axios.get("http://localhost:8000/results/get_created",{
+    const res = await api.get("/results/get_created",{
         withCredentials: true,
     })
     return res.data
@@ -52,7 +53,7 @@ export const delete_results_db = async(exam_title_classe: String) => {
 
   const csrfToken = Cookies.get("csrftoken"); //get csrf token
 
-  const res = await axios.delete(`http://localhost:8000/results/delete/${exam_title_classe}`, {
+  const res = await api.delete(`/results/delete/${exam_title_classe}`, {
         headers: {
             "X-CSRFToken": csrfToken ?? "", //send csrf token in header 
             'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ export const delete_results_db = async(exam_title_classe: String) => {
 
 
 export const get_student_results = async()=>{
-    const res = await axios.get("http://localhost:8000/results/get_student_results",{
+    const res = await api.get("/results/get_student_results",{
         withCredentials: true,
     })
     return res.data
@@ -75,12 +76,13 @@ export const use_get_student_results = ()=>{
   return useQuery({
     queryKey: ['student_results'],
     queryFn: get_student_results,
+    staleTime:  1000 * 60 * 15 // cache data expire in 15minutes
   });
 }
 
 
 export const get_last_results = async()=>{
-    const res = await axios.get("http://localhost:8000/results/get_last_results",{
+    const res = await api.get("/results/get_last_results",{
         withCredentials: true,
     })
     return res.data
